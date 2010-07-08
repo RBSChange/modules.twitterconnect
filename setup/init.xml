@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+	<binding fileName="modules/list/persistentdocument/import/list_binding.xml" />
+	<binding fileName="modules/task/persistentdocument/import/task_binding.xml" />
+
+	<systemfolder module="list" relatedmodule="twitterconnect">
+		<dynamiclist listid="modules_twitterconnect/authorizedaccountsbywebsite" label="Comptes twitter par site"
+			description="Liste des comtpes twitter authorisés pour un site donné." />
+			
+		<staticlist listid="modules_twitterconnect/sendinstatuses" label="Statuts d'envoi des tweets">
+			<staticitem value="sent" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Sent;" />
+			<staticitem value="planned" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Planned;" />
+			<staticitem value="error" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Error;" />
+		</staticlist>
+	</systemfolder>
+	
+	<systemfolder module="task" relatedmodule="twitterconnect">
+		<plannedtask label="Envoi des tweets planifiés" systemtaskclassname="twitterconnect_SendPlannedTweetsTask" />
+	</systemfolder>
+</script>

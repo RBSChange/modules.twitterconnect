@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/1.0.xsd" model-version="1.0" icon="tweet-planner" has-url="false" backoffice-indexable="false">
+  <properties>
+    <add name="contents" type="String" min-occurs="1"/>
+    <add name="account" type="modules_twitterconnect/account" max-occurs="-1"/>
+    <add name="websiteId" type="Integer" min-occurs="1"/>
+    <add name="containerId" type="Integer" min-occurs="1"/>
+    <add name="modelName" type="String" min-occurs="1"/>
+    <add name="moduleName" type="String" min-occurs="1"/>
+    <add name="lastTweetDate" type="DateTime"/>
+  </properties>
+  <statuses default="ACTIVE"/>
+</document>

@@ -1,0 +1,20 @@
+cdocumenteditor ctweetspanel{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cTweetsPanel);
+}
+cdocumenteditor ctweetspanel cfield[fieldtype='tweetcontents']{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cReplacedContentsField);
+}
+
+cdocumenteditor ccontainertweetspanel{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cContainerTweetsPanel);
+}
+cdocumenteditor ccontainertweetspanel cfield[fieldtype='tweetcontents']{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cTemplateContentsField);
+}
+
+cdocumenteditor section.tweet{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cTweetInfos);
+}
+cdocumenteditor section.planner{
+	-moz-binding: url(binding:modules.twitterconnect.cTwitterEditor#cPlannerInfos);
+}

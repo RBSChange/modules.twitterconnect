@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<localization>
+	<entity id="create_">
+		<locale lang="fr">créer</locale>
+		<locale lang="en">create</locale>
+		<locale lang="de">neu</locale>
+	</entity>
+	<entity id="Create-Account">
+		<locale lang="fr">ajouter un compte twitter</locale>
+		<locale lang="en">add twitter account</locale>
+	</entity>
+	<entity id="authorize-Account">
+		<locale lang="fr">authoriser le compte</locale>
+		<locale lang="en">authorize account</locale>
+	</entity>
+	<entity id="resend">
+		<locale lang="fr">retenter l'envoi</locale>
+		<locale lang="en">resend</locale>
+	</entity>
+</localization>

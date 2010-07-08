@@ -1,0 +1,1074 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- Base twitter panel -->
+	
+	<binding id="cBaseTweetsPanel" extends="layout.cDocumentEditor#cDocumentEditorPanelFields">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+			<stylesheet src="modules.twitterconnect.cTwitterPanel" />
+		</resources>
+		
+		<implementation>
+			<field name="mWebsiteId">null</field>
+			<field name="mId">null</field>
+			<field name="mFieldNames">['accounts', 'tweetContents', 'website']</field>
+			
+			<property name="moduleName" readonly="true">
+				<getter><![CDATA[
+					return this.documentEditor.mModule.name;
+				]]></getter>
+			</property>
+			
+			<constructor><![CDATA[
+				this.mId = Math.round(Math.random()*100000);
+				for (var i = 0; i < this.mFieldNames.length; i++)
+				{
+					this.updateCFieldId('field_'+this.mFieldNames[i]);
+					this.updateCLabelId('field_'+this.mFieldNames[i]);
+				}
+			]]></constructor>
+		
+			<method name="updateCFieldId">
+				<parameter name="anonId" />
+				<body><![CDATA[
+					var node = this.getElementByAnonId(anonId);
+					node.setAttribute('id', 'twitterconnect_cTweetsPanel_'+anonId+'_'+this.mId);
+				]]></body>
+			</method>
+		
+			<method name="updateCLabelId">
+				<parameter name="anonId" />
+				<body><![CDATA[
+					var labelAnonId = anonId + '_label';
+					var node = this.getElementByAnonId(labelAnonId);
+					node.setAttribute('id', 'twitterconnect_cTweetsPanel_'+labelAnonId+'_'+this.mId);
+					node.setAttribute('control', 'twitterconnect_cTweetsPanel_'+anonId+'_'+this.mId);
+				]]></body>
+			</method>
+			
+			<method name="onWebsiteChanged">
+				<parameter name="node" />
+				<body><![CDATA[
+					try
+					{
+						this.mWebsiteId = node.value;
+						var node = this.getElementByAnonId('field_accounts');
+						node.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
+					
+						var relatedId = this.documentEditor.documentid;
+						var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
+						if (result.status == 'OK')
+						{	
+							this.onWebsiteChangedOk(result);
+						}
+					}
+					catch (e)
+					{
+						wCore.error("onWebsiteChanged", [node], e);
+					}
+				]]></body>
+			</method>
+			
+			<method name="onWebsiteChangedOk">
+				<parameter name="result" />
+				<body><![CDATA[
+				]]></body>
+			</method>
+			
+			<method name="getInitializeParameters">
+				<body><![CDATA[
+					return {
+						module: 'twitterconnect',
+						action: 'LoadTweetsByTarget', 
+						relatedId: this.documentEditor.documentid, 
+						lang : Context.W_LANG,
+						startIndex: this.mStartIndex,
+						pageSize: this.mPageSize,
+						currentModule: this.moduleName
+					};
+				]]></body>
+			</method>
+									
+			<method name="fireInitializeComplete">
+				<parameter name="result" />
+				<body><![CDATA[
+					this.error = true;
+					if (result.status != "OK")
+					{
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{	
+						var websitesInfos = result.contents.websitesInfos;
+						if ('websitesData' in websitesInfos)
+						{
+							this.getElementByAnonId('website-row').removeAttribute('hidden');
+							this.updateCommonDataInPanel(result);
+							
+							var websiteList = this.getElementByAnonId('field_website');
+							websiteList.removeItems();
+							var websitesData = websitesInfos.websitesData;
+							var websiteData;
+							for (var i = 0; i < websitesData.length; i++)
+							{
+								websiteData = websitesData[i];
+								websiteList.appendItem(websiteData.label, websiteData.id);
+							}
+							
+							this.mWebsiteId = websitesData[0].id;
+							websiteList.value = this.mWebsiteId;							
+						}
+						else if ('websiteId' in websitesInfos)
+						{
+							this.getElementByAnonId('website-row').setAttribute('hidden', 'true');
+							this.updateCommonDataInPanel(result);
+														
+							this.mWebsiteId = websitesInfos.websiteId;
+							var node = this.getElementByAnonId('field_accounts');
+							node.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
+						}
+						else
+						{
+							this.getElementByAnonId('panel-content').setAttribute('hidden', 'true');
+							this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-not-in-a-website;");
+						}
+					}
+					this.mInitialized = true;
+					this.gotoTop();
+				]]></body>
+			</method>
+			
+			<method name="setupReplacements">
+				<parameter name="replacements" />
+				<body><![CDATA[
+					var node = this.getElementByAnonId('field_tweetContents');
+					node.clearSubstitutions();
+					for (var i = 0; i < replacements.length; i++)
+					{
+						replacement = replacements[i];
+						node.addSubstitution(replacement.label, replacement.name, replacement.value, replacement.maxLength, replacement.tooltip);
+					}
+				]]></body>
+			</method>
+			
+			<method name="updateCommonDataInPanel">
+				<parameter name="result" />
+				<body><![CDATA[
+					this.getElementByAnonId('panel-content').removeAttribute('hidden', 'true');							
+					this.initializeForm(result);					
+					this.refreshTweetList(result);
+					this.refreshPlannerList(result);
+				]]></body>
+			</method>
+			
+			<method name="initializeForm">
+				<parameter name="result" />
+				<body><![CDATA[
+					// Nothing done by default.
+				]]></body>
+			</method>
+			
+			<method name="refreshTweetList">
+				<parameter name="result" />
+				<body><![CDATA[
+					var tweets = result.contents.tweetsInfos.tweets;
+					var tweet;
+					var section;
+					var tweetsNode = this.getElementByAnonId('tweets');
+					for (var i = 0; i < tweets.length; i++)
+					{
+						tweet = tweets[i];
+						section = tweetsNode.childNodes[i];
+						if (section == null)
+						{
+							section = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'section');
+							section.className = 'tweet';
+							section.panel = this;
+							tweetsNode.appendChild(section);
+						}
+						else
+						{
+							section.removeAttribute('collapsed');
+							section.removeChild(section.firstChild);
+						}
+						section.appendChild(document.createTextNode(tweet['contents']));
+						
+						for (var name in tweet)
+						{
+							section.setAttribute(name, tweet[name]);
+							if (tweet[name] && tweet[name] != '')
+							{
+								section.removeAttribute(name+'hidden');
+							}
+							else
+							{
+								section.setAttribute(name+'hidden', true);
+							}
+						}
+					}
+					while (section = tweetsNode.childNodes[i])
+					{
+						section.setAttribute('collapsed', 'true');
+						i++;
+					}
+					this.updateNavigation(result.contents.tweetsInfos);
+				]]></body>
+			</method>
+			
+			<method name="refreshPlannerList">
+				<parameter name="result" />
+				<body><![CDATA[
+					var plannersNode = this.getElementByAnonId('tweets-planners');
+					if (!plannersNode)
+					{
+						return;
+					}
+					var planners = result.contents.plannersInfos.planners;
+					var planner;
+					var section;
+					for (var i = 0; i < planners.length; i++)
+					{
+						planner = planners[i];
+						section = plannersNode.childNodes[i];
+						if (section == null)
+						{
+							section = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul', 'section');
+							section.className = 'planner';
+							section.panel = this;
+							plannersNode.appendChild(section);
+						}
+						else
+						{
+							section.removeAttribute('collapsed');
+							section.removeChild(section.firstChild);
+						}
+						section.appendChild(document.createTextNode(planner['contents']));
+						
+						for (var name in planner)
+						{
+							section.setAttribute(name, planner[name]);
+							if (planner[name] && planner[name] != '')
+							{
+								section.removeAttribute(name+'hidden');
+							}
+							else
+							{
+								section.setAttribute(name+'hidden', true);
+							}
+						}
+					}
+					while (section = plannersNode.childNodes[i])
+					{
+						section.setAttribute('collapsed', 'true');
+						i++;
+					}
+				]]></body>
+			</method>
+			
+			<field name="mPageSize">5</field>
+			<field name="mDocumentTotal">0</field>
+			<field name="mStartIndex">0</field>
+			<field name="mEndIndex">0</field>
+			
+			<method name="updateNavigation">
+				<parameter name="contents" />
+				<body><![CDATA[
+					this.mDocumentTotal = parseInt(contents.total);
+					this.mStartIndex = parseInt(contents.startIndex);
+					
+					var viewDoc = contents.tweets.length;
+					this.mEndIndex = this.mStartIndex + viewDoc;
+	
+					this.getElementByAnonId('navigationtotal').value = this.mDocumentTotal;
+					var disableBack = (this.mStartIndex == 0);
+					this.getElementByAnonId('navigationbegin').disabled = disableBack;
+					this.getElementByAnonId('navigationback2').disabled = disableBack;
+					this.getElementByAnonId('navigationback').disabled = disableBack;
+					var disableNext = (this.mEndIndex >= this.mDocumentTotal);
+					this.getElementByAnonId('navigationnext').disabled = disableNext;
+					this.getElementByAnonId('navigationnext2').disabled = disableNext;
+					this.getElementByAnonId('navigationend').disabled = disableNext;
+					
+					var navigationindex = this.getElementByAnonId('navigationindex');
+					navigationindex.value = (this.mStartIndex + 1) + ' - ' + (this.mStartIndex + viewDoc);
+				]]></body>
+			</method>
+
+			<method name="navigateBegin">
+				<body><![CDATA[
+					this.mStartIndex = 0;
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateBack">
+				<parameter name="quick" />
+				<body><![CDATA[
+					this.mStartIndex -= this.mPageSize;
+					if (quick && (this.mStartIndex - (5 * this.mPageSize) >= 0))
+					{
+						this.mStartIndex -= (5 * this.mPageSize);
+					}
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateNext">
+				<parameter name="quick" />
+				<body><![CDATA[
+					this.mStartIndex += this.mPageSize;
+					if (quick && (this.mStartIndex + (5 * this.mPageSize) < this.mDocumentTotal))
+					{
+						this.mStartIndex += (5 * this.mPageSize);
+					}
+					this.refresh();
+				]]></body>
+			</method>
+
+			<method name="navigateEnd">
+				<body><![CDATA[
+					this.mStartIndex = this.mDocumentTotal - (this.mDocumentTotal % this.mPageSize);
+					if (this.mStartIndex == this.mDocumentTotal)
+					{
+						this.mStartIndex -= this.mPageSize;
+					}
+					this.refresh();
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+
+	<!-- Twitter panel for document -->
+
+	<binding id="cTweetsPanel" extends="modules.twitterconnect.cTwitterEditor#cBaseTweetsPanel">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+			<stylesheet src="modules.twitterconnect.cTwitterPanel" />
+		</resources>
+		<content>
+			<xul:vbox flex="1">
+				<xul:cmessageinfo anonid="message" />
+				<xul:scrollbox anonid="scrollctrl" flex="1" class="editordatacontainer" orient="vertical">
+					<xul:box class="box-inherit scrollbox-innerbox" flex="1" orient="vertical" anonid="panel-content">
+						<xul:groupbox>
+							<xul:caption flex="1">
+								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/add.png" /></xul:vbox>
+								<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Title;" />
+							</xul:caption>
+							<xul:grid>
+								<xul:columns>
+									<xul:column />
+									<xul:column flex="1"/>
+								</xul:columns>
+								<xul:rows>
+									<xul:row anonid="website-row">
+										<xul:clabel anonid="field_website_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Website;" />
+										<xul:cfield name="accounts" anonid="field_website" fieldtype="dropdownlist" hidehelp="true" />
+									</xul:row>
+									<xul:row>
+										<xul:clabel anonid="field_accounts_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Accounts;" />
+										<xul:cfield name="accounts" anonid="field_accounts" fieldtype="checklist" hidehelp="true" required="true" />
+									</xul:row>
+									<xul:row>
+										<xul:clabel anonid="field_tweetContents_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Contents;" />
+										<xul:cfield name="tweetContents" anonid="field_tweetContents" fieldtype="tweetcontents" class="with-counter" cols="70" rows="3" hidehelp="true" required="true">
+											<xul:cconstraint name="maxSize" parameter="140" />
+										</xul:cfield>
+									</xul:row>
+									<xul:row>
+										<xul:spacer />
+										<xul:hbox>
+											<xul:button anonid="sendTweetNowButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-now;" image="{IconsBase}/small/tweet.png" />
+											<xul:button anonid="sendTweetOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
+											<xul:spacer flex="1" />
+											<xul:cfield name="plannedDate" anonid="field_plannedDate" fieldtype="datetime" hidehelp="true" />
+											<xul:button anonid="planTweetButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Plan;" image="{IconsBase}/small/planned-tweet.png" />
+										</xul:hbox>
+									</xul:row>
+								</xul:rows>
+							</xul:grid>
+						</xul:groupbox>
+						<xul:groupbox>
+							<xul:caption flex="1">
+								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet.png" /></xul:vbox>
+								<xul:hbox align="center">
+									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Tweet-list;" />
+								</xul:hbox>
+								<xul:spacer flex="1" />
+								<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{IconsBase}/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
+								<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{IconsBase}/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
+								<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{IconsBase}/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
+								<xul:hbox align="center">
+									<xul:label anonid="navigationpagelabel" value="&amp;modules.uixul.bo.general.Documents;" />
+									<xul:label anonid="navigationindex" value="0" />
+									<xul:label anonid="navigationpageseparator" value="&amp;modules.uixul.bo.general.out-of;" />
+									<xul:label anonid="navigationtotal" value="0" />
+								</xul:hbox>
+								<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{IconsBase}/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
+								<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{IconsBase}/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
+								<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{IconsBase}/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
+								<xul:spacer flex="1" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+							</xul:caption>
+							<xul:vbox anonid="tweets" />
+						</xul:groupbox>
+						<xul:spacer flex="1" />
+					</xul:box>
+				</xul:scrollbox>
+			</xul:vbox>
+		</content>
+		<implementation>
+			<constructor><![CDATA[
+				var me = this;
+				this.getElementByAnonId('sendTweetNowButton').addEventListener('command', function () { me.sendNewTweet(this); }, true);
+				this.getElementByAnonId('sendTweetOnPublishButton').addEventListener('command', function () { me.sendNewTweetOnPublish(this); }, true);
+				this.getElementByAnonId('planTweetButton').addEventListener('command', function () { me.planNewTweet(this); }, true);
+				this.getElementByAnonId('field_website').addEventListener('fieldChanged', function () { me.onWebsiteChanged(this); }, true);
+			]]></constructor>
+		
+			<method name="updateCommandsUI">
+				<body><![CDATA[
+					this.getElementByAnonId('sendTweetNowButton').disabled = this.error;
+					this.getElementByAnonId('sendTweetOnPublishButton').disabled = this.error;
+					this.getElementByAnonId('planTweetButton').disabled = this.error;
+				]]></body>
+			</method>
+			
+			<method name="onWebsiteChangedOk">
+				<parameter name="result" />
+				<body><![CDATA[
+					var relatedInfos = result.contents.relatedInfos;
+					if ('replacements' in relatedInfos)
+					{	
+						this.setupReplacements(relatedInfos.replacements);
+					}
+				]]></body>
+			</method>
+						
+			<method name="initializeForm">
+				<parameter name="result" />
+				<body><![CDATA[
+					var relatedInfos = result.contents.relatedInfos;
+					if (relatedInfos.isPublished)
+					{
+						this.getElementByAnonId('sendTweetNowButton').removeAttribute('hidden');
+						this.getElementByAnonId('sendTweetOnPublishButton').setAttribute('hidden', 'true');
+					}
+					else
+					{
+						this.getElementByAnonId('sendTweetNowButton').setAttribute('hidden', 'true');
+						this.getElementByAnonId('sendTweetOnPublishButton').removeAttribute('hidden');
+					}
+					
+					if ('replacements' in relatedInfos)
+					{
+						this.setupReplacements(relatedInfos.replacements);
+					}
+				]]></body>
+			</method>
+			
+			<method name="sendNewTweet">
+				<parameter name="button" />
+				<body><![CDATA[
+					var accounts = this.getElementByAnonId('field_accounts').value;
+					var node = this.getElementByAnonId('field_tweetContents');
+					var websiteId = this.mWebsiteId;
+					var relatedId = this.documentEditor.documentid;
+					var result = wCore.executeJSON('twitterconnect', 'SendTweet', {currentModule: this.moduleName, accounts: accounts, contents: node.value, websiteId: websiteId, relatedId: relatedId, pageSize: this.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-sending-tweet;");
+						this.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+			
+			<method name="sendNewTweetOnPublish">
+				<parameter name="button" />
+				<body><![CDATA[
+					var accounts = this.getElementByAnonId('field_accounts').value;
+					var node = this.getElementByAnonId('field_tweetContents');
+					var websiteId = this.mWebsiteId;
+					var relatedId = this.documentEditor.documentid;
+					var result = wCore.executeJSON('twitterconnect', 'SendTweetOnPublish', {currentModule: this.moduleName, accounts: accounts, contents: node.value, websiteId: websiteId, relatedId: relatedId, pageSize: this.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweet-on-publish;");
+						this.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+			
+			<method name="planNewTweet">
+				<parameter name="button" />
+				<body><![CDATA[
+					var accounts = this.getElementByAnonId('field_accounts').value;
+					var plannedDate = this.getElementByAnonId('field_plannedDate').value;
+					if (!plannedDate)
+					{
+						this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-no-date-to-plan;");
+						return;
+					}
+					var node = this.getElementByAnonId('field_tweetContents');
+					var websiteId = this.mWebsiteId;
+					var relatedId = this.documentEditor.documentid;
+					var result = wCore.executeJSON('twitterconnect', 'PlanTweet', {currentModule: this.moduleName, accounts: accounts, contents: node.value, websiteId: websiteId, relatedId: relatedId, plannedDate: plannedDate, pageSize: this.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweet;");
+						this.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+			
+			<method name="refresh">
+				<body><![CDATA[
+					this.documentEditor.executeServerAction('tweets', 'Initialize');
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+	
+	<!-- Tweet panel for conainer -->
+	
+	<binding id="cContainerTweetsPanel" extends="modules.twitterconnect.cTwitterEditor#cBaseTweetsPanel">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+			<stylesheet src="modules.twitterconnect.cTwitterPanel" />
+		</resources>
+		<content>
+			<xul:vbox flex="1">
+				<xul:cmessageinfo anonid="message" />
+				<xul:scrollbox anonid="scrollctrl" flex="1" orient="vertical" class="editordatacontainer">
+					<xul:box class="box-inherit scrollbox-innerbox" flex="1" orient="vertical" anonid="panel-content">
+						<xul:groupbox>
+							<xul:caption flex="1">
+								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/add.png" /></xul:vbox>
+								<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.container-tweets.Title;" />
+							</xul:caption>
+							<xul:grid>
+								<xul:columns>
+									<xul:column />
+									<xul:column flex="1"/>
+								</xul:columns>
+								<xul:rows>
+									<xul:row>
+										<xul:clabel anonid="field_label_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Label;" />
+										<xul:cfield name="label" anonid="field_label" fieldtype="text" hidehelp="true" required="true" />
+									</xul:row>
+									<xul:row anonid="website-row">
+										<xul:clabel anonid="field_website_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Website;" />
+										<xul:cfield name="accounts" anonid="field_website" fieldtype="dropdownlist" hidehelp="true" />
+									</xul:row>
+									<xul:row>
+										<xul:clabel anonid="field_accounts_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Accounts;" />
+										<xul:cfield name="accounts" anonid="field_accounts" fieldtype="checklist" hidehelp="true" required="true" />
+									</xul:row>
+									<xul:row anonid="model-row">
+										<xul:clabel anonid="field_model_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Model;" />
+										<xul:cfield name="model" anonid="field_model" fieldtype="dropdownlist" hidehelp="true" required="true" />
+									</xul:row>
+									<xul:row>
+										<xul:clabel anonid="field_tweetContents_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Contents;" />
+										<xul:cfield name="tweetContents" anonid="field_tweetContents" fieldtype="tweetcontents" class="with-counter" cols="70" rows="3" hidehelp="true" required="true">
+											<xul:cconstraint name="maxSize" parameter="140" />
+										</xul:cfield>
+									</xul:row>
+									<xul:row>
+										<xul:spacer />
+										<xul:hbox>
+											<xul:button anonid="planTweetsOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
+											<xul:spacer flex="1" />
+											<xul:hbox anonid="planPeriodicTweetsButtonBox">
+												<xul:cfield name="period" anonid="field_period" fieldtype="duration" hidehelp="true" />
+												<xul:button anonid="planPeriodicTweetsButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Periodic;" image="{IconsBase}/small/planned-tweet.png" />
+											</xul:hbox>
+										</xul:hbox>
+									</xul:row>
+								</xul:rows>
+							</xul:grid>
+						</xul:groupbox>
+						<xul:groupbox>
+							<xul:caption flex="1">
+								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet-planner.png" /></xul:vbox>
+								<xul:hbox align="center">
+									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.container-tweets.Planner-list;" />
+								</xul:hbox>
+								<xul:spacer flex="1" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+							</xul:caption>
+							<xul:vbox anonid="tweets-planners" />
+						</xul:groupbox>
+						<xul:groupbox>
+							<xul:caption flex="1">
+								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet.png" /></xul:vbox>
+								<xul:hbox align="center">
+									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Tweet-list;" />
+								</xul:hbox>
+								<xul:spacer flex="1" />
+								<xul:toolbarbutton anonid="navigationbegin" disabled="true" oncommand="navigateBegin()" image="{IconsBase}/small/control-begin.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-begin;" />
+								<xul:toolbarbutton anonid="navigationback2" disabled="true" oncommand="navigateBack(true)" image="{IconsBase}/small/control-double-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back-quick;" />
+								<xul:toolbarbutton anonid="navigationback" disabled="true" oncommand="navigateBack()" image="{IconsBase}/small/control-backward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-back;" />
+								<xul:hbox align="center">
+									<xul:label anonid="navigationpagelabel" value="&amp;modules.uixul.bo.general.Documents;" />
+									<xul:label anonid="navigationindex" value="0" />
+									<xul:label anonid="navigationpageseparator" value="&amp;modules.uixul.bo.general.out-of;" />
+									<xul:label anonid="navigationtotal" value="0" />
+								</xul:hbox>
+								<xul:toolbarbutton anonid="navigationnext" disabled="true" oncommand="navigateNext()" image="{IconsBase}/small/control-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next;" />
+								<xul:toolbarbutton anonid="navigationnext2" disabled="true" oncommand="navigateNext(true)" image="{IconsBase}/small/control-double-forward.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-next-quick;" />
+								<xul:toolbarbutton anonid="navigationend" disabled="true" oncommand="navigateEnd()" image="{IconsBase}/small/control-end.png" tooltiptext="&amp;modules.uixul.bo.general.Navigate-end;" />
+								<xul:spacer flex="1" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+							</xul:caption>
+							<xul:vbox anonid="tweets" />
+						</xul:groupbox>
+						<xul:spacer flex="1" />
+					</xul:box>
+				</xul:scrollbox>
+			</xul:vbox>
+		</content>
+		<implementation>
+			<field name="mWebsiteId">null</field>
+			<field name="mId">null</field>
+			<field name="mFieldNames">['accounts', 'tweetContents', 'website', 'label', 'model']</field>
+		
+			<constructor><![CDATA[
+				var me = this;
+				this.getElementByAnonId('planTweetsOnPublishButton').addEventListener('command', function () { me.planTweetsOnPublish(this); }, true);
+				this.getElementByAnonId('planPeriodicTweetsButton').addEventListener('command', function () { me.planPeriodicTweets(this); }, true);
+				this.getElementByAnonId('field_website').addEventListener('fieldChanged', function () { me.onWebsiteChanged(this); }, true);
+			]]></constructor>
+		
+			<method name="hideModel">
+				<body><![CDATA[
+					this.getElementByAnonId('model-row').setAttribute('hidden', 'true');
+				]]></body>
+			</method>
+			
+			<method name="showModel">
+				<body><![CDATA[
+					this.getElementByAnonId('model-row').removeAttribute('hidden');
+				]]></body>
+			</method>
+		
+			<method name="initializeForm">
+				<parameter name="result" />
+				<body><![CDATA[
+					var containerInfos = result.contents.containerInfos;
+					if ('model' in containerInfos)
+					{
+						this.hideModel();
+													
+						this.mModel = containerInfos.model;
+						this.getElementByAnonId('field_model').value = this.mModel;
+						if ('replacements' in containerInfos)
+						{
+							this.setupReplacements(containerInfos.replacements);
+						}
+					}
+					else if ('allowedModels' in containerInfos)
+					{
+						this.showModel();
+												
+						var modelList = this.getElementByAnonId('field_model');
+						modelList.removeItems();
+						var modelsData = containerInfos.allowedModels;
+						var modelData;
+						for (var i = 0; i < modelsData.length; i++)
+						{
+							modelData = modelsData[i];
+							modelList.appendItem(modelData.label, modelData.name);
+						}
+						
+						this.mModel = modelsData[0].id;
+						modelsData.value = this.mModel;							
+					}
+					else
+					{
+						this.getElementByAnonId('panel-content').setAttribute('hidden', 'true');
+						this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-has-no-allowed-model;");
+					}
+				
+					if (containerInfos.allowPeriodic)
+					{
+						this.getElementByAnonId('planPeriodicTweetsButtonBox').removeAttribute('hidden');
+					}
+					else
+					{
+						this.getElementByAnonId('planPeriodicTweetsButtonBox').setAttribute('hidden', 'true');
+					}
+					if (containerInfos.allowOnPublish)
+					{
+						this.getElementByAnonId('planTweetsOnPublishButton').removeAttribute('hidden');
+					}
+					else
+					{
+						this.getElementByAnonId('planTweetsOnPublishButton').setAttribute('hidden', 'true');
+					}
+				]]></body>
+			</method>
+			
+			<method name="onModelChanged">
+				<parameter name="node" />
+				<body><![CDATA[
+					try
+					{
+						this.mModel = node.value;
+					
+						var relatedId = this.documentEditor.documentid;
+						var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, model: this.mModel, lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
+						if (result.status == 'OK')
+						{	
+							if ('replacements' in containerInfos)
+							{
+								this.setupReplacements(containerInfos.replacements);
+							}
+						}
+					}
+					catch (e)
+					{
+						wCore.error("onWebsiteChanged", [node], e);
+					}
+				]]></body>
+			</method>
+			
+			<method name="updateCommandsUI">
+				<body><![CDATA[
+					this.getElementByAnonId('planTweetsOnPublishButton').disabled = this.error;
+					this.getElementByAnonId('planPeriodicTweetsButton').disabled = this.error;
+				]]></body>
+			</method>
+			
+			<method name="planTweetsOnPublish">
+				<parameter name="button" />
+				<body><![CDATA[
+					var label = this.getElementByAnonId('field_label').value;
+					var model = this.getElementByAnonId('field_model').value;
+					var accounts = this.getElementByAnonId('field_accounts').value;
+					var node = this.getElementByAnonId('field_tweetContents');
+					var websiteId = this.mWebsiteId;
+					var containerId = this.documentEditor.documentid;
+					var result = wCore.executeJSON('twitterconnect', 'PlanTweetsOnPublish', {currentModule: this.moduleName, label: label, accounts: accounts, contents: node.value, websiteId: websiteId, containerId: containerId, model: model, pageSize: this.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweets-on-contained-document-publish;");
+						this.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+			
+			<method name="planPeriodicTweets">
+				<parameter name="button" />
+				<body><![CDATA[
+					var label = this.getElementByAnonId('field_label').value;
+					var model = this.getElementByAnonId('field_model').value;
+					var accounts = this.getElementByAnonId('field_accounts').value;
+					var node = this.getElementByAnonId('field_tweetContents');
+					var websiteId = this.mWebsiteId;
+					var containerId = this.documentEditor.documentid;
+					var period = this.getElementByAnonId('field_period').value;
+					var result = wCore.executeJSON('twitterconnect', 'PlanPeriodicTweets', {currentModule: this.moduleName, label: label, accounts: accounts, contents: node.value, websiteId: websiteId, containerId: containerId, model: model, period: period, pageSize: this.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-periodic-tweets-on-contained-documents;");
+						this.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+			
+			<method name="refresh">
+				<body><![CDATA[
+					this.documentEditor.executeServerAction('containertweets', 'Initialize');
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+	
+	<!-- Internal bindings -->
+	
+	<binding id="cTweetInfos">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+			<stylesheet src="modules.twitterconnect.cTwitterPanel" />
+		</resources>
+		<content>
+			<xul:groupbox flex="1" xbl:inherits="class=sendingStatus">
+				<xul:caption flex="1" >
+					<xul:vbox pack="center"><xul:image xbl:inherits="src=iconUrl" /></xul:vbox>
+					<xul:label xbl:inherits="value=sendingStatusFullLabel" />
+					<xul:label value="-" />
+					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.On-account;" />
+					<xul:label xbl:inherits="value=accountLabel" />
+				</xul:caption>
+				<xul:hbox flex="1" >
+					<xul:hbox flex="1">
+						<xbl:children />
+					</xul:hbox>
+					<xul:toolbarbutton xbl:inherits="disabled=disableDelete" anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
+					<xul:toolbarbutton xbl:inherits="disabled=disableResend" anonid="resend" image="{IconsBase}/small/refresh.png" label="&amp;modules.twitterconnect.bo.actions.Resend;" />
+				</xul:hbox>
+				<xul:hbox flex="1" class="error-message">
+					<xul:label xbl:inherits="value=errorMessage" />
+				</xul:hbox>
+			</xul:groupbox>
+		</content>
+		<implementation>
+			<field name="panel">null</field>
+			
+			<constructor><![CDATA[
+				var _this = this;
+				
+				var node = document.getAnonymousElementByAttribute(this, 'anonid', 'delete');
+				node.addEventListener('command', function () { _this.delete(); }, true);
+				
+				var node = document.getAnonymousElementByAttribute(this, 'anonid', 'resend');
+				node.addEventListener('command', function () { _this.resend(); }, true);
+			]]></constructor>
+
+			<method name="delete">
+				<body><![CDATA[
+					if (confirm("&amp;modules.twitterconnect.bo.doceditor.actions.Confirm-delete-tweet;"))
+					{
+						this.executeAction('DeleteDocument', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-deleting-tweet;");
+					}
+				]]></body>
+			</method>
+
+			<method name="resend">
+				<body><![CDATA[
+					this.executeAction('ResendTweet', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-resending-tweet;");
+				]]></body>
+			</method>
+
+			<method name="executeAction">
+				<parameter name="action" />
+				<parameter name="successMessage" />
+				<body><![CDATA[
+					var relatedId = this.panel.documentEditor.documentid;
+					var websiteId = this.panel.mWebsiteId;
+					var result = wCore.executeJSON('twitterconnect', action, {currentModule: this.panel.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: websiteId, startIndex: this.panel.mStartIndex, pageSize: this.panel.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.panel.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.panel.showTextMessage(successMessage);
+						this.panel.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+	
+	<binding id="cPlannerInfos">
+		<resources>
+			<stylesheet src="modules.uixul.cFieldsGroup" />
+			<stylesheet src="modules.twitterconnect.cTwitterPanel" />
+		</resources>
+		<content>
+			<xul:groupbox flex="1">
+				<xul:caption flex="1" >
+					<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet-planner.png" /></xul:vbox>
+					<xul:label xbl:inherits="value=label" />
+					<xul:label value="-" />
+					<xul:label xbl:inherits="value=plannerTypeLabel" />
+					<xul:label value="-" />
+					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.On-accounts;" />
+					<xul:label xbl:inherits="value=accountLabels" />
+				</xul:caption>
+				<xul:hbox flex="1" >
+					<xul:hbox flex="1">
+						<xbl:children />
+					</xul:hbox>
+					<xul:toolbarbutton anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
+				</xul:hbox>
+				<xul:hbox xbl:inherits="hidden=lastTweetDatehidden">
+					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Last-tweet-dateLabel;" /> <xul:label xbl:inherits="value=lastTweetDate" />
+				</xul:hbox>
+				<xul:hbox xbl:inherits="hidden=nextTweetDatehidden">
+					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Next-tweet-dateLabel;" /> <xul:label xbl:inherits="value=nextTweetDate" />
+				</xul:hbox>
+				<xul:hbox flex="1" class="error-message">
+					<xul:label xbl:inherits="value=errorMessage" />
+				</xul:hbox>
+			</xul:groupbox>
+		</content>
+		<implementation>
+			<field name="panel">null</field>
+			
+			<constructor><![CDATA[
+				var _this = this;
+				
+				var node = document.getAnonymousElementByAttribute(this, 'anonid', 'delete');
+				node.addEventListener('command', function () { _this.delete(); }, true);
+			]]></constructor>
+
+			<method name="delete">
+				<body><![CDATA[
+					if (confirm("&amp;modules.twitterconnect.bo.doceditor.actions.Confirm-delete-tweet;"))
+					{
+						this.executeAction('DeleteDocument', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-deleting-planner;");
+					}
+				]]></body>
+			</method>
+
+			<method name="executeAction">
+				<parameter name="action" />
+				<parameter name="successMessage" />
+				<body><![CDATA[
+					var relatedId = this.panel.documentEditor.documentid;
+					var websiteId = this.panel.mWebsiteId;
+					var result = wCore.executeJSON('twitterconnect', action, {currentModule: this.panel.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: websiteId, startIndex: this.panel.mStartIndex, pageSize: this.panel.mPageSize}, null, true);
+					if (result.status != 'OK')
+					{	
+						this.panel.showErrorMessage(result.contents.errorMessage);
+					}
+					else
+					{
+						this.panel.showTextMessage(successMessage);
+						this.panel.fireInitializeComplete(result);
+					}
+				]]></body>
+			</method>
+		</implementation>
+	</binding>
+	
+	<binding id="cReplacedContentsField" extends="form.cField#cLongTextWithCounterField">
+		<content>
+			<children/>
+			<xul:hbox xbl:inherits="context,spellcheck" flex="1">
+				<xul:textbox anonid="internalcontrol" multiline="true" cols="50" rows="5" xbl:inherits="maxlength,disabled,tabindex,accesskey,cols,rows"/>
+				<xul:vbox>
+					<xul:hbox align="center">
+						<xul:textbox anonid="counter" size="5" rows="1" value="0" readonly="true" />
+						<xul:label anonid="counter-label" value="&amp;modules.uixul.bo.doceditor.Character;" />
+					</xul:hbox>
+					<xul:hbox align="center" anonid="maximum-box" hidden="true">
+						<xul:label value="&amp;modules.uixul.bo.doceditor.Max-count;" />
+						<xul:label anonid="max-counter-label" />
+						<xul:label value="&amp;modules.uixul.bo.doceditor.remainsLabel;" />
+					</xul:hbox>
+					<xul:hbox align="center" anonid="remain-box" hidden="true">
+						<xul:textbox anonid="remain-counter" size="5" rows="1" value="0" readonly="true" />
+						<xul:label anonid="remain-counter-label" value="&amp;modules.uixul.bo.doceditor.Character;" />
+					</xul:hbox>
+					<xul:toolbar flex="1">
+						<xul:toolbarbutton tooltiptext="&amp;modules.uixul.bo.doceditor.Insert-var;" 
+							image="{IconsBase}/small/add.png" anonid="varsmenubutton"
+							type="menu" xbl:inherits="hidden=nocvar">
+						      <xul:menupopup anonid="varsmenu">
+						      	<children includes="menuitem" />
+						      </xul:menupopup>
+						</xul:toolbarbutton>
+						<xul:toolbarbutton anonid="helpbutton" image="chrome://global/skin/icons/question-16.png"
+							tooltiptext="&amp;modules.uixul.bo.doceditor.Show-help;" xbl:inherits="hidden=hidehelp" 
+							oncommand="dispatchFieldEvent('fieldHelp');" />
+					</xul:toolbar>
+				</xul:vbox>
+			</xul:hbox>
+		</content>
+		<implementation>
+			<constructor><![CDATA[
+				this.mTimerDelay = 250;
+				this.setAttribute('nocvar', 'true');
+			]]></constructor>
+				
+			<method name="clearSubstitutions">
+				<body><![CDATA[
+					this.setAttribute('nocvar', 'true');
+					var menuitems = this.getElementsByTagName('menuitem');
+					while (menuitems.length > 0) this.removeChild(menuitems.item(0));
+				]]></body>
+			</method>
+			
+			<method name="addSubstitution">
+				<parameter name="label" />
+				<parameter name="name" />
+				<parameter name="value" />
+				<parameter name="maxLength" />
+				<parameter name="tooltiptext" />
+				<body><![CDATA[
+					this.removeAttribute('nocvar');
+					var menuitem = document.createElement('menuitem');
+					menuitem.setAttribute('label', label);
+					menuitem.setAttribute('cvar', value);
+					menuitem.setAttribute('tooltiptext', tooltiptext || label);
+					this.appendChild(menuitem);
+				]]></body>
+			</method>			
+		</implementation>
+		
+		<handlers>
+			<handler event="command"><![CDATA[
+				if (event.originalTarget.hasAttribute('cvar'))
+				{
+					var textbox = this.internalControl;
+					var startIndex = textbox.selectionStart;
+					var cvar = event.originalTarget.getAttribute('cvar');
+					this.value = textbox.value.substring(0, startIndex) + cvar + textbox.value.substring(textbox.selectionEnd);
+					var newIndex = startIndex + value.length;
+					textbox.setSelectionRange(newIndex, newIndex);
+				}
+			]]></handler>
+		</handlers>
+	</binding>
+	
+	<binding id="cTemplateContentsField" extends="modules.twitterconnect.cTwitterEditor#cReplacedContentsField">
+		<implementation>
+			<method name="addSubstitution">
+				<parameter name="label" />
+				<parameter name="name" />
+				<parameter name="value" />
+				<parameter name="maxLength" />
+				<parameter name="tooltiptext" />
+				<body><![CDATA[
+					this.removeAttribute('nocvar');
+					var menuitem = document.createElement('menuitem');
+					menuitem.setAttribute('label', label);
+					menuitem.setAttribute('cvar', '{'+name+':'+maxLength+'}');
+					menuitem.setAttribute('tooltiptext', tooltiptext || label);
+					this.appendChild(menuitem);
+				]]></body>
+			</method>
+			
+			<method name="getValueLength">
+				<body><![CDATA[
+					var value = this.internalControl.value;
+					value = value.replace(/\{[a-z0-9]+\:([0-9]+)\}/gi, function (str, p1) {
+						var result = '';
+						var limit = parseInt(p1, 10);
+						for (var i = 0; i < limit; i++)
+						{
+							result += "#"; 
+						}
+						return result;
+					});
+					return value.length;
+				]]></body>
+			</method>		
+		</implementation>
+	</binding>
+</bindings>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization extend="modules.twitterconnect.document.planner">
+	<entity id="document-name">
+		<locale lang="fr">planificateur périodique</locale>
+	</entity>
+	<entity id="nextTweetDate">
+		<locale lang="fr">prochain tweet</locale>
+	</entity>
+</localization>

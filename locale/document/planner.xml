@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<localization>
+	<entity id="document-name">
+		<locale lang="fr">planificateur</locale>
+		<locale lang="en">planner</locale>
+	</entity>
+	<entity id="label">
+		<locale lang="fr">libellé</locale>
+		<locale lang="en">label</locale>
+	</entity>
+	<entity id="accounts">
+		<locale lang="fr">comptes</locale>
+	</entity>
+	<entity id="websiteId">
+		<locale lang="fr">site web</locale>
+	</entity>
+	<entity id="containerId">
+		<locale lang="fr">conteneur</locale>
+	</entity>
+</localization>

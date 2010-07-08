@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+	<action name="createFolder">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			this.createDocumentEditor('modules_twitterconnect_folder', listWidget.getSelectedItems()[0].id);
+		]]></body>
+	</action>
+	<action name="createAccount">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			this.createDocumentEditor('modules_twitterconnect_account', listWidget.getSelectedItems()[0].id);
+		]]></body>
+	</action>
+	<action name="authorize">
+		<parameter name="listWidget" />
+		<body><![CDATA[
+			var url = wCore.buildServerUrl('twitterconnect', 'Authorize', {cmpref: listWidget.getSelectedItems()[0].id});
+			var popup = window.open(url, 'modules_twitterconnect_authorize', 'height=500, width=800, toolbar=no, menubar=no, scrollbars=yes, resizable=yes, location=no, directories=no, status=no');
+			this.onAuthorizePupupClosed(popup);
+		]]></body>
+	</action>
+	<action name="onAuthorizePupupClosed">
+		<parameter name="popup" />
+		<body><![CDATA[
+			// TODO: maybe there is a better way to do that... 
+			//	We can't just call window.opener.document.getElementById("wmodule_twitterconnect").refreshMainViewDeck();
+			//	in the poppup because the domains are not the same (because of xchrome protocol).
+			if (popup.closed)
+			{
+				this.refreshMainViewDeck();
+			}
+			else
+			{
+				var me = this;
+				setTimeout(function () { me.onAuthorizePupupClosed(popup); }, 1000);
+			}
+		]]></body>
+	</action>
+</actions>

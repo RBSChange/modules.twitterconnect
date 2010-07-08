@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+  <binding fileName="modules/generic/persistentdocument/import/generic_binding.xml"/>
+  <binding name="preferences" className="twitterconnect_PreferencesScriptDocumentElement"/>
+  <binding name="account" className="twitterconnect_AccountScriptDocumentElement"/>
+  <binding name="tweet" className="twitterconnect_TweetScriptDocumentElement"/>
+  <binding name="planner" className="twitterconnect_PlannerScriptDocumentElement"/>
+  <binding name="onpublishplanner" className="twitterconnect_OnpublishplannerScriptDocumentElement"/>
+  <binding name="periodicplanner" className="twitterconnect_PeriodicplannerScriptDocumentElement"/>
+</script>

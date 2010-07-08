@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script>
+  <binding fileName="modules/useractionlogger/persistentdocument/import/useractionlogger_binding.xml"/>
+  <actiondef modulename="twitterconnect" actionname="insert.account" label="modules.twitterconnect.bo.useractionlogger.insert-account"/>
+  <actiondef modulename="twitterconnect" actionname="move.account" label="modules.twitterconnect.bo.useractionlogger.move-account"/>
+  <actiondef modulename="twitterconnect" actionname="delete.tweet" label="modules.twitterconnect.bo.useractionlogger.delete-tweet"/>
+  <actiondef modulename="twitterconnect" actionname="update.account" label="modules.twitterconnect.bo.useractionlogger.update-account"/>
+  <actiondef modulename="twitterconnect" actionname="delete.account" label="modules.twitterconnect.bo.useractionlogger.delete-account"/>
+</script>
