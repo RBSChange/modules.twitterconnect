@@ -47,21 +47,15 @@
 				]]></body>
 			</method>
 			
-			<method name="onWebsiteChanged">
-				<parameter name="node" />
+			<method name="changeWebsite">
+				<parameter name="websiteId" />
 				<body><![CDATA[
 					try
 					{
-						this.mWebsiteId = node.value;
-						var node = this.getElementByAnonId('field_accounts');
-						node.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
+						this.mWebsiteId = websiteId;
+						this.fields.accounts.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
 					
-						var relatedId = this.documentEditor.documentid;
-						var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
-						if (result.status == 'OK')
-						{	
-							this.onWebsiteChangedOk(result);
-						}
+						this.loadReplacementByWebsite();
 					}
 					catch (e)
 					{
@@ -70,8 +64,7 @@
 				]]></body>
 			</method>
 			
-			<method name="onWebsiteChangedOk">
-				<parameter name="result" />
+			<method name="loadReplacementByWebsite">
 				<body><![CDATA[
 				]]></body>
 			</method>
@@ -93,18 +86,24 @@
 			<method name="fireInitializeComplete">
 				<parameter name="result" />
 				<body><![CDATA[
-					this.error = true;
 					if (result.status != "OK")
 					{
 						this.showErrorMessage(result.contents.errorMessage);
+						this.collapseContentZone(true);
+						this.mInitialized = true;
+						return;
 					}
-					else
-					{	
+										
+					if (!this.mInitialized)
+					{
+					
+						this.collapseContentZone(false);
+						this.mInitialized = true;
+						
 						var websitesInfos = result.contents.websitesInfos;
 						if ('websitesData' in websitesInfos)
 						{
 							this.getElementByAnonId('website-row').removeAttribute('hidden');
-							this.updateCommonDataInPanel(result);
 							
 							var websiteList = this.getElementByAnonId('field_website');
 							websiteList.removeItems();
@@ -116,25 +115,17 @@
 								websiteList.appendItem(websiteData.label, websiteData.id);
 							}
 							
-							this.mWebsiteId = websitesData[0].id;
-							websiteList.value = this.mWebsiteId;							
+							this.changeWebsite(websitesData[0].id);
+							var valid = this.setInitialValues(this.fields, {website: this.mWebsiteId.toString()});
 						}
 						else if ('websiteId' in websitesInfos)
 						{
 							this.getElementByAnonId('website-row').setAttribute('hidden', 'true');
-							this.updateCommonDataInPanel(result);
-														
-							this.mWebsiteId = websitesInfos.websiteId;
-							var node = this.getElementByAnonId('field_accounts');
-							node.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
-						}
-						else
-						{
-							this.getElementByAnonId('panel-content').setAttribute('hidden', 'true');
-							this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-not-in-a-website;");
+							this.changeWebsite(websitesInfos.websiteId);
+							var valid = this.setInitialValues(this.fields, {website: this.mWebsiteId.toString()});
 						}
 					}
-					this.mInitialized = true;
+					this.updateCommonDataInPanel(result);
 					this.gotoTop();
 				]]></body>
 			</method>
@@ -424,7 +415,7 @@
 				this.getElementByAnonId('sendTweetNowButton').addEventListener('command', function () { me.sendNewTweet(this); }, true);
 				this.getElementByAnonId('sendTweetOnPublishButton').addEventListener('command', function () { me.sendNewTweetOnPublish(this); }, true);
 				this.getElementByAnonId('planTweetButton').addEventListener('command', function () { me.planNewTweet(this); }, true);
-				this.getElementByAnonId('field_website').addEventListener('fieldChanged', function () { me.onWebsiteChanged(this); }, true);
+				this.getElementByAnonId('field_website').addEventListener('fieldChanged', function () { me.changeWebsite(this.value); }, true);
 			]]></constructor>
 		
 			<method name="updateCommandsUI">
@@ -435,13 +426,14 @@
 				]]></body>
 			</method>
 			
-			<method name="onWebsiteChangedOk">
-				<parameter name="result" />
+			<method name="loadReplacementByWebsite">
 				<body><![CDATA[
-					var relatedInfos = result.contents.relatedInfos;
-					if ('replacements' in relatedInfos)
-					{	
-						this.setupReplacements(relatedInfos.replacements);
+					var relatedId = this.documentEditor.documentid;
+					var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
+					
+					if (result.status == 'OK')
+					{
+						this.setupReplacements(result.contents);
 					}
 				]]></body>
 			</method>
@@ -482,8 +474,9 @@
 					}
 					else
 					{
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-sending-tweet;");
+						this.mInitialized = false;
 						this.fireInitializeComplete(result);
+						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-sending-tweet;");
 					}
 				]]></body>
 			</method>
@@ -963,17 +956,14 @@
 				<xul:textbox anonid="internalcontrol" multiline="true" cols="50" rows="5" xbl:inherits="maxlength,disabled,tabindex,accesskey,cols,rows"/>
 				<xul:vbox>
 					<xul:hbox align="center">
-						<xul:textbox anonid="counter" size="5" rows="1" value="0" readonly="true" />
-						<xul:label anonid="counter-label" value="&amp;modules.uixul.bo.doceditor.Character;" />
+						<xul:label anonid="counter" value="0" />
+						<xul:label anonid="counter-label" value="&amp;modules.uixul.bo.doceditor.character;" />
 					</xul:hbox>
 					<xul:hbox align="center" anonid="maximum-box" hidden="true">
 						<xul:label value="&amp;modules.uixul.bo.doceditor.Max-count;" />
 						<xul:label anonid="max-counter-label" />
-						<xul:label value="&amp;modules.uixul.bo.doceditor.remainsLabel;" />
-					</xul:hbox>
-					<xul:hbox align="center" anonid="remain-box" hidden="true">
-						<xul:textbox anonid="remain-counter" size="5" rows="1" value="0" readonly="true" />
-						<xul:label anonid="remain-counter-label" value="&amp;modules.uixul.bo.doceditor.Character;" />
+						<xul:label value="&amp;modules.uixul.bo.doceditor.remains;" />
+						<xul:label anonid="remain-counter" value="0" />
 					</xul:hbox>
 					<xul:toolbar flex="1">
 						<xul:toolbarbutton tooltiptext="&amp;modules.uixul.bo.doceditor.Insert-var;" 

@@ -126,7 +126,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 			}
 			else
 			{
-				return array();
+				throw new BaseException('No website', 'modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-not-in-a-website');
 			}
 		}
 		else 
@@ -138,7 +138,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 			}
 			else
 			{
-				return array();
+				throw new BaseException('No website', 'modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-not-in-a-website');
 			}
 		}
 		
