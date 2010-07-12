@@ -373,7 +373,7 @@
 											<xul:button anonid="sendTweetNowButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-now;" image="{IconsBase}/small/tweet.png" />
 											<xul:button anonid="sendTweetOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
 											<xul:spacer flex="1" />
-											<xul:cfield name="plannedDate" anonid="field_plannedDate" fieldtype="datetime" hidehelp="true" />
+											<xul:cfield name="plannedDate" anonid="field_plannedDate" fieldtype="datetime" hidehelp="true" initialvalue="" />
 											<xul:button anonid="planTweetButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Plan;" image="{IconsBase}/small/planned-tweet.png" />
 										</xul:hbox>
 									</xul:row>
@@ -412,6 +412,7 @@
 		<implementation>
 			<constructor><![CDATA[
 				var me = this;
+				this.updateCFieldId('field_plannedDate');
 				this.getElementByAnonId('sendTweetNowButton').addEventListener('command', function () { me.sendNewTweet(this); }, true);
 				this.getElementByAnonId('sendTweetOnPublishButton').addEventListener('command', function () { me.sendNewTweetOnPublish(this); }, true);
 				this.getElementByAnonId('planTweetButton').addEventListener('command', function () { me.planNewTweet(this); }, true);
@@ -822,7 +823,7 @@
 					<xul:toolbarbutton xbl:inherits="disabled=disableDelete" anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
 					<xul:toolbarbutton xbl:inherits="disabled=disableResend" anonid="resend" image="{IconsBase}/small/refresh.png" label="&amp;modules.twitterconnect.bo.actions.Resend;" />
 				</xul:hbox>
-				<xul:hbox flex="1" class="error-message">
+				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />
 				</xul:hbox>
 			</xul:groupbox>

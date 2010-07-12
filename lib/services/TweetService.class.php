@@ -127,6 +127,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 			
 			$tweetInfos['disableDelete'] = 'false';
 			$tweetInfos['disableResend'] = 'true';
+			$tweetInfos['errorMessage'] = null;
 			switch ($sendingStatus)
 			{
 				case self::STATUS_SENT: 
