@@ -185,6 +185,15 @@
 						}
 						section.appendChild(document.createTextNode(tweet['contents']));
 						
+						if (tweet.relatedId != this.documentEditor.documentid)
+						{
+							section.removeAttribute('hideRelatedInfos');
+						}
+						else
+						{
+							section.setAttribute('hideRelatedInfos', true);
+						}
+						
 						for (var name in tweet)
 						{
 							section.setAttribute(name, tweet[name]);
@@ -826,6 +835,11 @@
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />
 				</xul:hbox>
+				<xul:hbox xbl:inherits="hidden=hideRelatedInfos">
+					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Related-documentLabel;" />
+					<xul:vbox pack="center"><xul:image xbl:inherits="src=relatedIconUrl" /></xul:vbox>
+					<xul:label xbl:inherits="value=relatedCompleteLabel" />
+				</xul:hbox>	
 			</xul:groupbox>
 		</content>
 		<implementation>

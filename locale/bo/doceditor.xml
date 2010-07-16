@@ -72,6 +72,10 @@
 		<locale lang="fr">prochain tweet</locale>
 		<locale lang="en">next tweet</locale>
 	</entity>
+	<entity id="panel.tweets.related-document">
+		<locale lang="fr">document lié</locale>
+		<locale lang="en">related document</locale>
+	</entity>
 	<entity id="panel.tweets.error-no-account-selected">
 		<locale lang="fr">vous devez sélectionner au moins un compte sur lequel poster votre tweet. Si vous n'avez encore défini aucun compte, rendez-vous dans le module "interconnexion twitter".</locale>
 	</entity>

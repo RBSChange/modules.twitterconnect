@@ -150,6 +150,15 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 					break;
 			}
 			
+			$relatedDocument = DocumentHelper::getDocumentInstance($tweet->getRelatedId());
+			$tweetInfos['relatedId'] = $relatedDocument->getId();
+			$tweetInfos['relatedLabel'] = $relatedDocument->getLabel();
+			$model = $relatedDocument->getPersistentModel();
+			$tweetInfos['relatedIcon'] = $model->getIcon();
+			$tweetInfos['relatedIconUrl'] = MediaHelper::getIcon($tweetInfos['relatedIcon'], MediaHelper::SMALL);
+			$tweetInfos['relatedModelLabel'] = f_Locale::translate($model->getLabel());
+			$tweetInfos['relatedCompleteLabel'] = $tweetInfos['relatedLabel'] . ' (' . $tweetInfos['relatedModelLabel'] . ')';
+			
 			$tweetsInfos[] = $tweetInfos;
 		}
 		return $tweetsInfos;
