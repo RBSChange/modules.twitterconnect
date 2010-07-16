@@ -37,4 +37,41 @@
 			}
 		]]></body>
 	</action>
+	
+	<action name="onModuleInit">
+		<body><![CDATA[
+			this.executeJSON("CheckModuleInit", {cmpref: this.mRootFolderId, lang:this.getContextLang()});
+		]]></body>
+	</action>
+	
+	<action name="onCheckModuleInitSuccess">
+		<parameter name="result" />
+		<body><![CDATA[
+			if ('accountNotSet' in result.contents)
+			{
+				wCore.debug(wCore.dump(result.contents));
+				var notifZone = this.getElementByAnonId('initnotification');
+				notifZone.removeAllNotifications(true);		
+				var edit = this.getActionInfo('editPreferences');														
+				var callback = function (notif, bI) {bI.module.editPreferences(bI.id)};
+				var buttons = [{callback:callback, label:edit.label, accessKey:"", id: result.contents.id, module:this}];
+				notifZone.appendNotification("&amp;modules.twitterconnect.bo.general.notification.No-Account;", 
+						'editPreferences', wToolkit.getIcon('edit', 'small'), notifZone.PRIORITY_CRITICAL_BLOCK, buttons);
+			}
+			else
+			{
+				var notifZone = this.getElementByAnonId('initnotification');
+				notifZone.removeAllNotifications(false);
+			}		
+		]]></body>
+	</action>
+	
+	<action name="editPreferences">
+		<parameter name="documentId" />
+		<body><![CDATA[
+			var uri = ['preferences', 'openDocument', 'modules_twitterconnect_preferences', documentId, 'properties'].join(',');	
+			var from = ['twitterconnect', 'onModuleInit'].join(',');	
+			openActionUri(uri, from)			
+		]]></body>
+	</action>	
 </actions>

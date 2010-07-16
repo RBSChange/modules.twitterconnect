@@ -59,4 +59,7 @@
 		<locale lang="fr">tous les {period} ans</locale>
 		<locale lang="en">each {period} years</locale>
 	</entity>
+	<entity id="notification.no-account">
+		<locale lang="fr">le compte twitter n'est pas défini dans les préférences.</locale>
+	</entity>	
 </localization>

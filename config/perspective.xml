@@ -73,5 +73,6 @@
 		<action name="createFolder" single="true" permission="Insert_folder" icon="create-folder" label="&amp;modules.uixul.bo.actions.Create-folder;" />
 		<action name="createAccount" single="true" permission="Insert_account" icon="document_add" label="&amp;modules.twitterconnect.bo.actions.Create-account;" />
 		<action name="authorize" single="true" permission="Authorize" icon="check" label="&amp;modules.twitterconnect.bo.actions.Authorize-account;" />
+		<action name="editPreferences" single="true" permission="Load" icon="edit" label="&amp;modules.uixul.bo.actions.Edit;" />
 	</actions>
 </perspective>

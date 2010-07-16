@@ -9,7 +9,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	 * @var twitterconnect_ModuleService
 	 */
 	private static $instance = null;
-
+	
 	/**
 	 * @return twitterconnect_ModuleService
 	 */
@@ -129,7 +129,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 				throw new BaseException('No website', 'modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-not-in-a-website');
 			}
 		}
-		else 
+		else
 		{
 			$websiteId = $relatedDoc->getDocumentService()->getWebsiteId($relatedDoc);
 			if ($websiteId !== null)
@@ -178,7 +178,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 		{
 			return $this->parseTwitterResultJson($result);
 		}
-		else 
+		else
 		{
 			throw Exception('bad format');
 		}
@@ -257,11 +257,34 @@ class twitterconnect_ModuleService extends ModuleBaseService
 					$this->getInfos($value, $child);
 				}
 			}
-			else 
+			else
 			{
 				$value = ($node->firstChild) ? $node->firstChild->nodeValue : null;
 			}
 			$infos[$node->tagName] = $value;
 		}
+	}
+	
+	public function checkInitModuleInfos()
+	{
+		$result = array();
+		$preference = ModuleService::getInstance()->getPreferencesDocument('twitterconnect');
+		if ($preference === null)
+		{
+			$service = twitterconnect_PreferencesService::getInstance();
+			$preference = $service->getNewDocumentInstance();
+			$service->save($preference);
+		}
+		
+		if (f_util_StringUtils::isEmpty($preference->getConsumerKey()) || f_util_StringUtils::isEmpty($preference->getConsumerSecret()))
+		{
+			$result['accountNotSet'] = true;
+			$result['id'] = $preference->getId();
+		}
+		else
+		{
+			$result['accountKey'] = $preference->getConsumerKey();
+		}
+		return $result;
 	}
 }
