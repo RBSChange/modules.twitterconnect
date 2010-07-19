@@ -41,23 +41,27 @@
 	</entity>
 	<entity id="planner-types.periodic">
 		<locale lang="fr">tous/toutes les {period}</locale>
-		<locale lang="en">each {period}</locale>
+		<locale lang="en">every {period}</locale>
+	</entity>
+	<entity id="period-h">
+		<locale lang="fr">toutes les {period} heures</locale>
+		<locale lang="en">every {period} hours</locale>
 	</entity>
 	<entity id="period-d">
 		<locale lang="fr">tous les {period} jours</locale>
-		<locale lang="en">each {period} days</locale>
+		<locale lang="en">every {period} days</locale>
 	</entity>
 	<entity id="period-w">
 		<locale lang="fr">toutes les {period} semaines</locale>
-		<locale lang="en">each {period} weeks</locale>
+		<locale lang="en">every {period} weeks</locale>
 	</entity>
 	<entity id="period-m">
 		<locale lang="fr">tous les {period} mois</locale>
-		<locale lang="en">each {period} months</locale>
+		<locale lang="en">every {period} months</locale>
 	</entity>
 	<entity id="period-y">
 		<locale lang="fr">tous les {period} ans</locale>
-		<locale lang="en">each {period} years</locale>
+		<locale lang="en">every {period} years</locale>
 	</entity>
 	<entity id="notification.no-account">
 		<locale lang="fr">le compte twitter n'est pas défini dans les préférences.</locale>

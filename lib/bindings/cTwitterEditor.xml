@@ -596,7 +596,7 @@
 											<xul:button anonid="planTweetsOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
 											<xul:spacer flex="1" />
 											<xul:hbox anonid="planPeriodicTweetsButtonBox">
-												<xul:cfield name="period" anonid="field_period" fieldtype="duration" hidehelp="true" />
+												<xul:cfield name="period" anonid="field_period" fieldtype="duration" hidehelp="true" hidehours="false"/>
 												<xul:button anonid="planPeriodicTweetsButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Periodic;" image="{IconsBase}/small/planned-tweet.png" />
 											</xul:hbox>
 										</xul:hbox>

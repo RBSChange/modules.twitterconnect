@@ -78,7 +78,6 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 			return;
 		}
 		$ids = $service->getContainedIdsForTweet($container, $planner->getModelName());
-		
 		foreach ($planner->getPublishedAccountArray() as $account)
 		{
 			$alreadyTweetedIds = twitterconnect_TweetService::getInstance()->getAlreadyTweetedPublishedIdsByModelName($planner->getModelName(), $account);
@@ -123,6 +122,7 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 			Framework::fatal(__METHOD__ . ' $unit = ' . $unit . ', $value = ' . $value);
 			switch ($unit)
 			{
+				case 'h': $next->add(date_Calendar::HOUR, $value); break;
 				case 'd': $next->add(date_Calendar::DAY, $value); break;
 				case 'w': $next->add(date_Calendar::DAY, $value*7); break;
 				case 'm': $next->add(date_Calendar::MONTH, $value); break;

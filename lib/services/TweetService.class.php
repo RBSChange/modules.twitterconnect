@@ -205,13 +205,19 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		$tweet->setSendingDate(date_Calendar::getInstance()->toString());
 		if (array_key_exists('error', $infos))
 		{
-			Framework::fatal(__METHOD__ . ' KO accountId = ' . $account->getId() . ', error = ' . $infos['error']);
+			if (Framework::isInfoEnabled())
+			{
+				Framework::info(__METHOD__ . ' KO accountId = ' . $account->getId() . ', error = ' . $infos['error']);
+			}
 			$tweet->setSendingStatus(twitterconnect_TweetService::STATUS_ERROR);
 		}
 		else
 		{
 			$tweetId = $infos['id'];
-			Framework::fatal(__METHOD__ . ' OK tweet id = ' . $tweetId);
+			if (Framework::isInfoEnabled())
+			{
+				Framework::info(__METHOD__ . ' OK tweet id = ' . $tweetId);
+			}
 			$tweet->setSendingStatus(twitterconnect_TweetService::STATUS_SENT);
 			$tweet->setTweetId($tweetId);
 		}
