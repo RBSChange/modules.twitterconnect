@@ -22,7 +22,7 @@ class twitterconnect_LoadReplacementsAction extends f_action_BaseJSONAction
 		}
 		else if ($request->hasParameter('model'))
 		{
-			$result = $tms->getReplacementsByModelName($request->hasParameter('model'), $module, $request->getParameter('websiteId'));
+			$result = $tms->getReplacementsByModelName($request->getParameter('model'), $module, $request->getParameter('websiteId'));
 		}
 		
 		return $this->sendJSON($result);

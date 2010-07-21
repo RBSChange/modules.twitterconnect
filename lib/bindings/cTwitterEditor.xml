@@ -11,6 +11,7 @@
 		
 		<implementation>
 			<field name="mWebsiteId">null</field>
+			<field name="mModel">null</field>
 			<field name="mId">null</field>
 			<field name="mFieldNames">['accounts', 'tweetContents', 'website']</field>
 			
@@ -54,18 +55,12 @@
 					{
 						this.mWebsiteId = websiteId;
 						this.fields.accounts.replaceItems({cmpref: 'modules_twitterconnect/authorizedaccountsbywebsite', websiteId: this.mWebsiteId});
-					
-						this.loadReplacementByWebsite();
+						this.mustReloadOptions();
 					}
 					catch (e)
 					{
 						wCore.error("onWebsiteChanged", [node], e);
 					}
-				]]></body>
-			</method>
-			
-			<method name="loadReplacementByWebsite">
-				<body><![CDATA[
 				]]></body>
 			</method>
 			
@@ -75,7 +70,7 @@
 						module: 'twitterconnect',
 						action: 'LoadTweetsByTarget', 
 						relatedId: this.documentEditor.documentid, 
-						lang : Context.W_LANG,
+						lang: Context.W_LANG,
 						startIndex: this.mStartIndex,
 						pageSize: this.mPageSize,
 						currentModule: this.moduleName
@@ -96,9 +91,11 @@
 										
 					if (!this.mInitialized)
 					{
-					
+						this.mustReloadOptions();
+						
 						this.collapseContentZone(false);
 						this.mInitialized = true;
+						this.mModel = null;
 						
 						var websitesInfos = result.contents.websitesInfos;
 						if ('websitesData' in websitesInfos)
@@ -127,6 +124,31 @@
 					}
 					this.updateCommonDataInPanel(result);
 					this.gotoTop();
+				]]></body>
+			</method>
+			
+			<method name="mustReloadOptions">
+				<body><![CDATA[
+					var node = this.getElementByAnonId('field_tweetContents');
+					node.setAttribute('mustReloadOptions', true);
+					node.setAttribute('moduleName', this.moduleName);
+					node.setAttribute('relatedId', this.documentEditor.documentid);
+					if (this.mWebsiteId)
+					{
+						node.setAttribute('websiteId', this.mWebsiteId);
+					}
+					else
+					{
+						node.removeAttribute('websiteId');
+					}
+					if (this.mModel)
+					{
+						node.setAttribute('modelName', this.mModel);
+					}
+					else
+					{
+						node.removeAttribute('modelName');
+					}
 				]]></body>
 			</method>
 			
@@ -435,19 +457,7 @@
 					this.getElementByAnonId('planTweetButton').disabled = this.error;
 				]]></body>
 			</method>
-			
-			<method name="loadReplacementByWebsite">
-				<body><![CDATA[
-					var relatedId = this.documentEditor.documentid;
-					var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, cmpref: this.getAttribute('documentId'), lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
-					
-					if (result.status == 'OK')
-					{
-						this.setupReplacements(result.contents);
-					}
-				]]></body>
-			</method>
-						
+									
 			<method name="initializeForm">
 				<parameter name="result" />
 				<body><![CDATA[
@@ -463,10 +473,7 @@
 						this.getElementByAnonId('sendTweetOnPublishButton').removeAttribute('hidden');
 					}
 					
-					if ('replacements' in relatedInfos)
-					{
-						this.setupReplacements(relatedInfos.replacements);
-					}
+					this.mustReloadOptions();
 				]]></body>
 			</method>
 			
@@ -678,10 +685,7 @@
 													
 						this.mModel = containerInfos.model;
 						this.getElementByAnonId('field_model').value = this.mModel;
-						if ('replacements' in containerInfos)
-						{
-							this.setupReplacements(containerInfos.replacements);
-						}
+						this.mustReloadOptions();
 					}
 					else if ('allowedModels' in containerInfos)
 					{
@@ -728,24 +732,8 @@
 			<method name="onModelChanged">
 				<parameter name="node" />
 				<body><![CDATA[
-					try
-					{
-						this.mModel = node.value;
-					
-						var relatedId = this.documentEditor.documentid;
-						var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', {currentModule: this.moduleName, model: this.mModel, lang: Context.W_LANG, relatedId: relatedId, websiteId: this.mWebsiteId}, null, true);
-						if (result.status == 'OK')
-						{	
-							if ('replacements' in containerInfos)
-							{
-								this.setupReplacements(containerInfos.replacements);
-							}
-						}
-					}
-					catch (e)
-					{
-						wCore.error("onWebsiteChanged", [node], e);
-					}
+					this.mModel = node.value;
+					this.mustReloadOptions();
 				]]></body>
 			</method>
 			
@@ -966,9 +954,10 @@
 	
 	<binding id="cReplacedContentsField" extends="form.cField#cLongTextWithCounterField">
 		<content>
-			<children/>
+			<children />
 			<xul:hbox xbl:inherits="context,spellcheck" flex="1">
-				<xul:textbox anonid="internalcontrol" multiline="true" cols="50" rows="5" xbl:inherits="maxlength,disabled,tabindex,accesskey,cols,rows"/>
+				<xul:textbox anonid="internalcontrol" multiline="true" cols="50" rows="5"
+					xbl:inherits="maxlength,disabled,tabindex,accesskey,cols,rows" />
 				<xul:vbox>
 					<xul:hbox align="center">
 						<xul:label anonid="counter" value="0" />
@@ -981,16 +970,15 @@
 						<xul:label anonid="remain-counter" value="0" />
 					</xul:hbox>
 					<xul:toolbar flex="1">
-						<xul:toolbarbutton tooltiptext="&amp;modules.uixul.bo.doceditor.Insert-var;" 
-							image="{IconsBase}/small/add.png" anonid="varsmenubutton"
-							type="menu" xbl:inherits="hidden=nocvar">
-						      <xul:menupopup anonid="varsmenu">
-						      	<children includes="menuitem" />
-						      </xul:menupopup>
+						<xul:toolbarbutton tooltiptext="&amp;modules.uixul.bo.doceditor.Insert-var;" image="{IconsBase}/small/add.png"
+							anonid="varsmenubutton" type="menu" xbl:inherits="hidden=nocvar">
+							<xul:menupopup anonid="varsmenu" onpopupshowing="loadReplacements();">
+								<children includes="menuitem" />
+							</xul:menupopup>
 						</xul:toolbarbutton>
 						<xul:toolbarbutton anonid="helpbutton" image="chrome://global/skin/icons/question-16.png"
-							tooltiptext="&amp;modules.uixul.bo.doceditor.Show-help;" xbl:inherits="hidden=hidehelp" 
-							oncommand="dispatchFieldEvent('fieldHelp');" />
+							tooltiptext="&amp;modules.uixul.bo.doceditor.Show-help;"
+							xbl:inherits="hidden=hidehelp" oncommand="dispatchFieldEvent('fieldHelp');" />
 					</xul:toolbar>
 				</xul:vbox>
 			</xul:hbox>
@@ -998,12 +986,11 @@
 		<implementation>
 			<constructor><![CDATA[
 				this.mTimerDelay = 250;
-				this.setAttribute('nocvar', 'true');
+				this.setAttribute('mustReloadOptions', 'true');
 			]]></constructor>
 				
 			<method name="clearSubstitutions">
 				<body><![CDATA[
-					this.setAttribute('nocvar', 'true');
 					var menuitems = this.getElementsByTagName('menuitem');
 					while (menuitems.length > 0) this.removeChild(menuitems.item(0));
 				]]></body>
@@ -1016,12 +1003,87 @@
 				<parameter name="maxLength" />
 				<parameter name="tooltiptext" />
 				<body><![CDATA[
-					this.removeAttribute('nocvar');
 					var menuitem = document.createElement('menuitem');
 					menuitem.setAttribute('label', label);
 					menuitem.setAttribute('cvar', value);
 					menuitem.setAttribute('tooltiptext', tooltiptext || label);
 					this.appendChild(menuitem);
+				]]></body>
+			</method>
+			
+			<method name="loadReplacements">
+				<body><![CDATA[
+					if (!this.hasAttribute('mustReloadOptions'))
+					{
+						return;
+					}
+					
+					try
+					{
+						this.removeAttribute('mustReloadOptions');
+						this.clearSubstitutions();
+						var menuitem = document.createElement('menuitem');
+						menuitem.setAttribute('label', '&modules.twitterconnect.bo.doceditor.panel.tweets.Items-loading;');
+						menuitem.setAttribute('image', '{IconsBase}/small/item-loading.png');
+						menuitem.setAttribute('class', 'menuitem-iconic');
+						this.appendChild(menuitem);
+					
+						var params = {currentModule: this.getAttribute('moduleName'), websiteId: this.getAttribute('websiteId'), lang: Context.W_LANG};
+						if (this.hasAttribute('modelName'))
+						{
+							params.model = this.getAttribute('modelName');
+						}
+						else if (this.hasAttribute('relatedId'))
+						{
+							params.relatedId = this.getAttribute('relatedId');
+						}
+						
+						var me = this;
+						var callback = function(result) {
+							if (result.status == 'OK')
+							{
+								me.setupReplacements(result.contents);
+							}
+							else
+							{
+								me.clearSubstitutions();
+								var menuitem = document.createElement('menuitem');
+								menuitem.setAttribute('label', result.contents.errorMessage);
+								menuitem.setAttribute('image', '{IconsBase}/small/error.png');
+								menuitem.setAttribute('class', 'menuitem-iconic');
+								me.appendChild(menuitem);
+							}
+						}
+						
+						var result = wCore.executeJSON('twitterconnect', 'LoadReplacements', params, callback, true);
+					}
+					catch (e)
+					{
+						wCore.error("onWebsiteChanged", [node], e);
+					}
+				]]></body>
+			</method>
+			
+			<method name="setupReplacements">
+				<parameter name="replacements" />
+				<body><![CDATA[
+					this.clearSubstitutions();
+					if (replacements.length > 0)
+					{
+						for (var i = 0; i < replacements.length; i++)
+						{
+							replacement = replacements[i];
+							this.addSubstitution(replacement.label, replacement.name, replacement.value, replacement.maxLength, replacement.tooltip);
+						}
+					}
+					else
+					{
+						var menuitem = document.createElement('menuitem');
+						menuitem.setAttribute('label', '&modules.twitterconnect.bo.doceditor.panel.tweets.No-substitution;');
+						menuitem.setAttribute('image', '{IconsBase}/small/reject.png');
+						menuitem.setAttribute('class', 'menuitem-iconic');
+						this.appendChild(menuitem);
+					}
 				]]></body>
 			</method>			
 		</implementation>

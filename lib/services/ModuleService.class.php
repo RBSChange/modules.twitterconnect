@@ -91,7 +91,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	 * @param f_persistentdocument_PersistentDocument $document
 	 * @return array
 	 */
-	public function getReplacementsByService($service, $websiteId, $document = null)
+	private function getReplacementsByService($service, $websiteId, $document = null)
 	{
 		if (f_util_ClassUtils::methodExists($service, 'getReplacementsForTweet'))
 		{

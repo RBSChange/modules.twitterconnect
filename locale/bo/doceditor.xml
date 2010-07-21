@@ -106,6 +106,12 @@
 	<entity id="panel.tweets.success-planning-periodic-tweets-on-contained-documents">
 		<locale lang="fr">l'envoi périodique de tweets a bien été planifié sur les documents contenus.</locale>
 	</entity>
+	<entity id="panel.tweets.no-substitution">
+		<locale lang="fr">aucune substitution trouvée</locale>
+	</entity>
+	<entity id="panel.tweets.items-loading">
+		<locale lang="fr">substitutions en cours de chargement</locale>
+	</entity>
 	<entity id="panel.container-tweets.title">
 		<locale lang="fr">automatiser l'envoi de tweets</locale>
 	</entity>

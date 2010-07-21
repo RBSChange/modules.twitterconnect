@@ -109,8 +109,6 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 	 */
 	public function getContainerInfosById($document, $service, $websiteId)
 	{
-		$ms = twitterconnect_ModuleService::getInstance();
-		
 		$allowPeriodic = f_util_ClassUtils::methodExists($service, 'getContainedIdsForTweet');
 		$allowOnPublish = (!f_util_ClassUtils::methodExists($service, 'canSendTweetOnContainedDocumentPublish') || $service->canSendTweetOnContainedDocumentPublish($document));
 		$infos = array('allowPeriodic' => $allowPeriodic, 'allowOnPublish' => $allowOnPublish);
@@ -119,12 +117,10 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 		if (count($modelInfos) == 1)
 		{
 			$infos['model'] = $modelInfos[0]['name'];
-			$infos['replacements'] = $ms->getReplacementsByModelName($infos['model'], null, $websiteId);
 		}
 		else if (count($modelInfos) > 1)
 		{
 			$infos['allowedModels'] = $this->getAllowModelInfos($document, $service);
-			$infos['replacements'] = array();
 		}
 		
 		return $infos;

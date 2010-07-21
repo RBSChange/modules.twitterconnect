@@ -67,12 +67,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	 */
 	public function getRelatedInfosById($document, $service, $websiteId)
 	{
-		$infos = array('isPublished' => $document->isPublished());
-		if ($websiteId)
-		{
-			$infos['replacements'] = twitterconnect_ModuleService::getInstance()->getReplacementsByService($service, $websiteId, $document);
-		}
-		return $infos;
+		return array('isPublished' => $document->isPublished());
 	}
 	
 	/**
