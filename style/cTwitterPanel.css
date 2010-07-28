@@ -1,17 +1,18 @@
-ctweetspanel groupbox, ccontainertweetspanel groupbox{
+groupbox{
 	border: 1px solid #bbb !important;
 	-moz-border-radius: 5px !important;
 	background-color: #f9f9f9 !important;
 }
-ctweetspanel groupbox groupbox, ccontainertweetspanel groupbox groupbox{
+groupbox groupbox{
 	background-color: #f0f0f0 !important;
 }
-
-ctweetspanel groupbox caption, ccontainertweetspanel groupbox caption{
+groupbox caption{
 	padding: 0 !important;	
 	margin: 0 !important;	
 }
-
-ctweetspanel .error-message, ccontainertweetspanel .error-message{
+.error-message{
 	color: red;
+}
+.change-toolbox, .change-toolbar{
+	background: transparent !important;
 }
