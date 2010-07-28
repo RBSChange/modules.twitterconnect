@@ -2,6 +2,7 @@
 <script>
 	<binding fileName="modules/list/persistentdocument/import/list_binding.xml" />
 	<binding fileName="modules/task/persistentdocument/import/task_binding.xml" />
+	<binding fileName="modules/twitterconnect/persistentdocument/import/twitterconnect_binding.xml" />
 
 	<systemfolder module="list" relatedmodule="twitterconnect">
 		<dynamiclist listid="modules_twitterconnect/authorizedaccountsbywebsite" label="Comptes twitter par site"
@@ -17,4 +18,8 @@
 	<systemfolder module="task" relatedmodule="twitterconnect">
 		<plannedtask label="Envoi des tweets planifiés" systemtaskclassname="twitterconnect_SendPlannedTweetsTask" />
 	</systemfolder>
+	
+	<rootfolder module="preferences">
+		<preferences />
+	</rootfolder>
 </script>
