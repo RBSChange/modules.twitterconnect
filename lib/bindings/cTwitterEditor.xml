@@ -740,14 +740,14 @@
 					<xul:label xbl:inherits="value=accountLabel" />
 				</xul:caption>
 				<xul:hbox flex="1" >
-					<xul:hbox flex="1">
+					<xul:hbox flex="1" class="allow-text-selection">
 						<xbl:children />
 					</xul:hbox>
 					<xul:toolbarbutton xbl:inherits="disabled=disableDelete" anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
 					<xul:toolbarbutton xbl:inherits="disabled=disableResend" anonid="resend" image="{IconsBase}/small/refresh.png" label="&amp;modules.twitterconnect.bo.actions.Resend;" />
 				</xul:hbox>
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
-					<xul:label xbl:inherits="value=errorMessage" />
+					<xul:label xbl:inherits="xbl:text=errorMessage" class="allow-text-selection" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=hideRelatedInfos">
 					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Related-documentLabel;" />
@@ -822,7 +822,7 @@
 					<xul:label xbl:inherits="value=accountLabels" />
 				</xul:caption>
 				<xul:hbox flex="1" >
-					<xul:hbox flex="1">
+					<xul:hbox flex="1" class="allow-text-selection">
 						<xbl:children />
 					</xul:hbox>
 					<xul:toolbarbutton anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
@@ -833,7 +833,7 @@
 				<xul:hbox xbl:inherits="hidden=nextTweetDatehidden">
 					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Next-tweet-dateLabel;" /> <xul:label xbl:inherits="value=nextTweetDate" />
 				</xul:hbox>
-				<xul:hbox flex="1" class="error-message">
+				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />
 				</xul:hbox>
 			</xul:groupbox>
