@@ -6,7 +6,7 @@
 
 	<systemfolder module="list" relatedmodule="twitterconnect">
 		<dynamiclist listid="modules_twitterconnect/authorizedaccountsbywebsite" label="Comptes twitter par site"
-			description="Liste des comtpes twitter authorisés pour un site donné." />
+			description="Liste des comtpes twitter autorisés pour un site donné." />
 			
 		<staticlist listid="modules_twitterconnect/sendinstatuses" label="Statuts d'envoi des tweets">
 			<staticitem value="sent" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Sent;" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <localization>
 	<entity id="property.authorized">
-		<locale lang="fr">authrorisé</locale>
+		<locale lang="fr">autorisé</locale>
 		<locale lang="en">authorized</locale>
 	</entity>
 	<entity id="tab.tweets">
