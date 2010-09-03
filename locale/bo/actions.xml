@@ -10,7 +10,7 @@
 		<locale lang="en">add twitter account</locale>
 	</entity>
 	<entity id="authorize-Account">
-		<locale lang="fr">authoriser le compte</locale>
+		<locale lang="fr">autoriser le compte</locale>
 		<locale lang="en">authorize account</locale>
 	</entity>
 	<entity id="resend">
