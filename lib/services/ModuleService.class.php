@@ -180,7 +180,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 		}
 		else
 		{
-			throw Exception('bad format');
+			throw new Exception('bad format');
 		}
 	}
 	
