@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.document.periodicplanner" lcid="fr_FR">
+  <include id="m.twitterconnect.document.planner"/>
+  <key id="document-name">planificateur périodique</key>
+  <key id="nexttweetdate">prochain tweet</key>
+</i18n>

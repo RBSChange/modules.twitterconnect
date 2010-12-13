@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.bo.doceditor.actions" lcid="fr_FR">
+  <key id="confirm-delete-tweet">êtes-vous sûr de vouloir supprimer ce tweet ? Attention, cela le supprimera également sur twitter.</key>
+  <key id="success-deleting-tweet">le tweet a bien été supprimé.</key>
+  <key id="success-resending-tweet">votre tweet a bien été posté.</key>
+  <key id="success-deleting-planner">la publication automatique a bien été supprimée.</key>
+</i18n>

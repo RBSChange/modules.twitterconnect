@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.document.planner" lcid="fr_FR">
+  <key id="document-name">planificateur</key>
+  <key id="label">libellé</key>
+  <key id="accounts">comptes</key>
+  <key id="websiteid">site web</key>
+  <key id="containerid">conteneur</key>
+</i18n>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.bo.doceditor.panel.tweets" lcid="en_GB">
+  <key id="send">tweet</key>
+  <key id="send-now">tweet now</key>
+  <key id="send-on-publish">tweet on publish</key>
+  <key id="plan">plan</key>
+  <key id="tweet-list">tweet list</key>
+  <key id="title">post a message on twitter</key>
+  <key id="on-account">on account</key>
+  <key id="on-accounts">on accounts</key>
+  <key id="website">website</key>
+  <key id="accounts">twitter accounts</key>
+  <key id="contents">tweet contents</key>
+  <key id="label">label</key>
+  <key id="periodic">periodic</key>
+  <key id="last-tweet-date">last tweet</key>
+  <key id="next-tweet-date">next tweet</key>
+  <key id="related-document">related document</key>
+</i18n>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.bo.general.sending-statuses" lcid="en_GB">
+  <key id="sent">sent</key>
+  <key id="planned">planned</key>
+  <key id="onpublish">planned on publish</key>
+  <key id="error">error</key>
+</i18n>

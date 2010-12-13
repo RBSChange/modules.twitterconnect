@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.document.account" lcid="fr_FR">
+  <key id="document-name">compte twitter</key>
+  <key id="label">libellé</key>
+  <key id="login">identifiant twitter</key>
+  <key id="website">sites web</key>
+  <key id="website-help">sites web pour lesquels ce compte sera disponible.</key>
+</i18n>
