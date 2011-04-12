@@ -119,7 +119,6 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 			$period = $document->getPeriod();
 			$value = substr($period, 0, -1);
 			$unit = substr($period, -1);
-			Framework::fatal(__METHOD__ . ' $unit = ' . $unit . ', $value = ' . $value);
 			switch ($unit)
 			{
 				case 'h': $next->add(date_Calendar::HOUR, $value); break;
@@ -133,7 +132,6 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 		{
 			$next = date_Calendar::getInstance();
 		}
-		Framework::fatal(__METHOD__ . ' ' . $next->toString());
 		$document->setNextTweetDate($next->toString());
 	}
 }
