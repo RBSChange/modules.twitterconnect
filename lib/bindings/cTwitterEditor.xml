@@ -592,12 +592,14 @@
 			<method name="hideModel">
 				<body><![CDATA[
 					this.getElementByAnonId('model-row').setAttribute('hidden', 'true');
+					this.getElementByAnonId('field_model').setAttribute('required', 'false');
 				]]></body>
 			</method>
 			
 			<method name="showModel">
 				<body><![CDATA[
 					this.getElementByAnonId('model-row').removeAttribute('hidden');
+					this.getElementByAnonId('field_model').setAttribute('required', 'true');
 				]]></body>
 			</method>
 		
