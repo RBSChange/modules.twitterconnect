@@ -324,7 +324,7 @@
 						<xul:groupbox>
 							<xul:caption flex="1">
 								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/add.png" /></xul:vbox>
-								<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Title;" />
+								<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.title,ucf,attr}" />
 							</xul:caption>
 							<xul:grid>
 								<xul:columns>
@@ -333,15 +333,18 @@
 								</xul:columns>
 								<xul:rows>
 									<xul:row anonid="website-row">
-										<xul:clabel anonid="field_website_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Website;" />
+										<xul:clabel anonid="field_website_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.website,ucf,attr}" />
 										<xul:cfield name="accounts" anonid="field_website" fieldtype="dropdownlist" hidehelp="true" />
 									</xul:row>
 									<xul:row>
-										<xul:clabel anonid="field_accounts_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Accounts;" />
+										<xul:clabel anonid="field_accounts_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.accounts,ucf,attr}" />
 										<xul:cfield name="accounts" anonid="field_accounts" fieldtype="checklist" hidehelp="true" required="true" />
 									</xul:row>
 									<xul:row>
-										<xul:clabel anonid="field_tweetContents_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Contents;" />
+										<xul:clabel anonid="field_tweetContents_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.contents,ucf,attr}" />
 										<xul:cfield name="tweetContents" anonid="field_tweetContents" fieldtype="tweetcontents" class="with-counter" cols="70" rows="3" hidehelp="true" required="true">
 											<xul:cconstraint name="maxSize" parameter="140" />
 										</xul:cfield>
@@ -349,11 +352,14 @@
 									<xul:row>
 										<xul:spacer />
 										<xul:hbox>
-											<xul:button anonid="sendTweetNowButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-now;" image="{IconsBase}/small/tweet.png" />
-											<xul:button anonid="sendTweetOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
+											<xul:button anonid="sendTweetNowButton" disabled="true" 
+												label="${transui:m.twitterconnect.bo.doceditor.panel.tweets.send-now,ucf,attr}" image="{IconsBase}/small/tweet.png" />
+											<xul:button anonid="sendTweetOnPublishButton" disabled="true" 
+												label="${transui:m.twitterconnect.bo.doceditor.panel.tweets.send-on-publish,ucf,attr}" image="{IconsBase}/small/tweet.png" />
 											<xul:spacer flex="1" />
 											<xul:cfield name="plannedDate" anonid="field_plannedDate" fieldtype="datetime" hidehelp="true" initialvalue="" />
-											<xul:button anonid="planTweetButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Plan;" image="{IconsBase}/small/planned-tweet.png" />
+											<xul:button anonid="planTweetButton" disabled="true" 
+												label="${transui:m.twitterconnect.bo.doceditor.panel.tweets.plan,ucf,attr}" image="{IconsBase}/small/planned-tweet.png" />
 										</xul:hbox>
 									</xul:row>
 								</xul:rows>
@@ -363,12 +369,13 @@
 							<xul:caption flex="1">
 								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet.png" /></xul:vbox>
 								<xul:hbox align="center">
-									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Tweet-list;" />
+									<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.tweet-list,ucf,attr}" />
 								</xul:hbox>
 								<xul:spacer flex="1" />
 								<xul:cpaginator anonid="paginator" hideseparator="true" />
 								<xul:spacer flex="1" />
-								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" 
+									label="${transui:m.uixul.bo.general.refresh,ucf,attr}" />
 							</xul:caption>
 							<xul:vbox anonid="tweets" />
 						</xul:groupbox>
@@ -430,7 +437,7 @@
 					{
 						this.mInitialized = false;
 						this.fireInitializeComplete(result);
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-sending-tweet;");
+						this.showTextMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.success-sending-tweet,ucf,js}");
 					}
 				]]></body>
 			</method>
@@ -449,7 +456,7 @@
 					}
 					else
 					{
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweet-on-publish;");
+						this.showTextMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.success-planning-tweet-on-publish,ucf,js}");
 						this.fireInitializeComplete(result);
 					}
 				]]></body>
@@ -462,7 +469,7 @@
 					var plannedDate = this.getElementByAnonId('field_plannedDate').value;
 					if (!plannedDate)
 					{
-						this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-no-date-to-plan;");
+						this.showErrorMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.error-no-date-to-plan,ucf,js}");
 						return;
 					}
 					var node = this.getElementByAnonId('field_tweetContents');
@@ -475,7 +482,7 @@
 					}
 					else
 					{
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweet;");
+						this.showTextMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.success-planning-tweet,ucf,js}");
 						this.fireInitializeComplete(result);
 					}
 				]]></body>
@@ -504,7 +511,7 @@
 						<xul:groupbox>
 							<xul:caption flex="1">
 								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/add.png" /></xul:vbox>
-								<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.container-tweets.Title;" />
+								<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.container-tweets.title,ucf,attr}" />
 							</xul:caption>
 							<xul:grid>
 								<xul:columns>
@@ -513,23 +520,28 @@
 								</xul:columns>
 								<xul:rows>
 									<xul:row>
-										<xul:clabel anonid="field_label_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Label;" />
+										<xul:clabel anonid="field_label_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.label,ucf,attr}" />
 										<xul:cfield name="label" anonid="field_label" fieldtype="text" hidehelp="true" required="true" />
 									</xul:row>
 									<xul:row anonid="website-row">
-										<xul:clabel anonid="field_website_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Website;" />
+										<xul:clabel anonid="field_website_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.website,ucf,attr}" />
 										<xul:cfield name="accounts" anonid="field_website" fieldtype="dropdownlist" hidehelp="true" />
 									</xul:row>
 									<xul:row>
-										<xul:clabel anonid="field_accounts_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Accounts;" />
+										<xul:clabel anonid="field_accounts_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.accounts,ucf,attr}" />
 										<xul:cfield name="accounts" anonid="field_accounts" fieldtype="checklist" hidehelp="true" required="true" />
 									</xul:row>
 									<xul:row anonid="model-row">
-										<xul:clabel anonid="field_model_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Model;" />
+										<xul:clabel anonid="field_model_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.model,ucf,attr}" />
 										<xul:cfield name="model" anonid="field_model" fieldtype="dropdownlist" hidehelp="true" required="true" />
 									</xul:row>
 									<xul:row>
-										<xul:clabel anonid="field_tweetContents_label" value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Contents;" />
+										<xul:clabel anonid="field_tweetContents_label" 
+											value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.contents,ucf,attr}" />
 										<xul:cfield name="tweetContents" anonid="field_tweetContents" fieldtype="tweetcontents" class="with-counter" cols="70" rows="3" hidehelp="true" required="true">
 											<xul:cconstraint name="maxSize" parameter="140" />
 										</xul:cfield>
@@ -537,11 +549,12 @@
 									<xul:row>
 										<xul:spacer />
 										<xul:hbox>
-											<xul:button anonid="planTweetsOnPublishButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Send-on-publish;" image="{IconsBase}/small/tweet.png" />
+											<xul:button anonid="planTweetsOnPublishButton" disabled="true" 
+												label="${transui:m.twitterconnect.bo.doceditor.panel.tweets.send-on-publish,ucf,attr}" image="{IconsBase}/small/tweet.png" />
 											<xul:spacer flex="1" />
 											<xul:hbox anonid="planPeriodicTweetsButtonBox">
 												<xul:cfield name="period" anonid="field_period" fieldtype="duration" hidehelp="true" hidehours="false"/>
-												<xul:button anonid="planPeriodicTweetsButton" disabled="true" label="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Periodic;" image="{IconsBase}/small/planned-tweet.png" />
+												<xul:button anonid="planPeriodicTweetsButton" disabled="true" label="${transui:m.twitterconnect.bo.doceditor.panel.tweets.periodic,ucf,attr}" image="{IconsBase}/small/planned-tweet.png" />
 											</xul:hbox>
 										</xul:hbox>
 									</xul:row>
@@ -552,10 +565,10 @@
 							<xul:caption flex="1">
 								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet-planner.png" /></xul:vbox>
 								<xul:hbox align="center">
-									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.container-tweets.Planner-list;" />
+									<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.container-tweets.planner-list,ucf,attr}" />
 								</xul:hbox>
 								<xul:spacer flex="1" />
-								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="${transui:m.uixul.bo.general.refresh,ucf,attr}" />
 							</xul:caption>
 							<xul:vbox anonid="tweets-planners" />
 						</xul:groupbox>
@@ -563,12 +576,12 @@
 							<xul:caption flex="1">
 								<xul:vbox pack="center"><xul:image src="{IconsBase}/small/tweet.png" /></xul:vbox>
 								<xul:hbox align="center">
-									<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Tweet-list;" />
+									<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.tweet-list,ucf,attr}" />
 								</xul:hbox>
 								<xul:spacer flex="1" />
 								<xul:cpaginator anonid="paginator" hideseparator="true" />
 								<xul:spacer flex="1" />
-								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="&amp;modules.uixul.bo.general.Refresh;" />
+								<xul:toolbarbutton oncommand="refresh()" image="{IconsBase}/small/refresh.png" label="${transui:m.uixul.bo.general.refresh,ucf,attr}" />
 							</xul:caption>
 							<xul:vbox anonid="tweets" />
 						</xul:groupbox>
@@ -635,7 +648,7 @@
 					else
 					{
 						this.getElementByAnonId('panel-content').setAttribute('hidden', 'true');
-						this.showErrorMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Error-document-has-no-allowed-model;");
+						this.showErrorMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.error-document-has-no-allowed-model,ucf,js}");
 					}
 				
 					if (containerInfos.allowPeriodic)
@@ -688,7 +701,7 @@
 					}
 					else
 					{
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-tweets-on-contained-document-publish;");
+						this.showTextMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.success-planning-tweets-on-contained-document-publish,ucf,js}");
 						this.fireInitializeComplete(result);
 					}
 				]]></body>
@@ -711,7 +724,7 @@
 					}
 					else
 					{
-						this.showTextMessage("&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Success-planning-periodic-tweets-on-contained-documents;");
+						this.showTextMessage("${transui:m.twitterconnect.bo.doceditor.panel.tweets.success-planning-periodic-tweets-on-contained-documents,ucf,js}");
 						this.fireInitializeComplete(result);
 					}
 				]]></body>
@@ -738,21 +751,23 @@
 					<xul:vbox pack="center"><xul:image xbl:inherits="src=iconUrl" /></xul:vbox>
 					<xul:label xbl:inherits="value=sendingStatusFullLabel" />
 					<xul:label value="-" />
-					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.On-account;" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.on-account,ucf,attr}" />
 					<xul:label xbl:inherits="value=accountLabel" />
 				</xul:caption>
 				<xul:hbox flex="1" >
 					<xul:hbox flex="1" class="allow-text-selection">
 						<xbl:children />
 					</xul:hbox>
-					<xul:toolbarbutton xbl:inherits="disabled=disableDelete" anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
-					<xul:toolbarbutton xbl:inherits="disabled=disableResend" anonid="resend" image="{IconsBase}/small/refresh.png" label="&amp;modules.twitterconnect.bo.actions.Resend;" />
+					<xul:toolbarbutton xbl:inherits="disabled=disableDelete" anonid="delete" image="{IconsBase}/small/delete.png" 
+						label="${transui:m.uixul.bo.actions.delete,ucf,attr}" />
+					<xul:toolbarbutton xbl:inherits="disabled=disableResend" anonid="resend" image="{IconsBase}/small/refresh.png" 
+						label="${transui:m.twitterconnect.bo.actions.resend,ucf,attr}" />
 				</xul:hbox>
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="xbl:text=errorMessage" class="allow-text-selection" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=hideRelatedInfos">
-					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Related-documentLabel;" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.related-document,ucf,attr,lab}" />
 					<xul:vbox pack="center"><xul:image xbl:inherits="src=relatedIconUrl" /></xul:vbox>
 					<xul:label xbl:inherits="value=relatedCompleteLabel" />
 				</xul:hbox>	
@@ -773,16 +788,16 @@
 
 			<method name="delete">
 				<body><![CDATA[
-					if (confirm("&amp;modules.twitterconnect.bo.doceditor.actions.Confirm-delete-tweet;"))
+					if (confirm("${transui:m.twitterconnect.bo.doceditor.actions.confirm-delete-tweet,ucf,js}"))
 					{
-						this.executeAction('DeleteDocument', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-deleting-tweet;");
+						this.executeAction('DeleteDocument', "${transui:m.twitterconnect.bo.doceditor.actions.success-deleting-tweet,ucf,js}");
 					}
 				]]></body>
 			</method>
 
 			<method name="resend">
 				<body><![CDATA[
-					this.executeAction('ResendTweet', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-resending-tweet;");
+					this.executeAction('ResendTweet', "${transui:m.twitterconnect.bo.doceditor.actions.success-resending-tweet,ucf,js}");
 				]]></body>
 			</method>
 
@@ -820,20 +835,21 @@
 					<xul:label value="-" />
 					<xul:label xbl:inherits="value=plannerTypeLabel" />
 					<xul:label value="-" />
-					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.On-accounts;" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.on-accounts,ucf,attr}" />
 					<xul:label xbl:inherits="value=accountLabels" />
 				</xul:caption>
 				<xul:hbox flex="1" >
 					<xul:hbox flex="1" class="allow-text-selection">
 						<xbl:children />
 					</xul:hbox>
-					<xul:toolbarbutton anonid="delete" image="{IconsBase}/small/delete.png" label="&amp;modules.uixul.bo.actions.Delete;" />
+					<xul:toolbarbutton anonid="delete" image="{IconsBase}/small/delete.png" 
+						label="${transui:m.uixul.bo.actions.delete,ucf,attr}" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=lastTweetDatehidden">
-					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Last-tweet-dateLabel;" /> <xul:label xbl:inherits="value=lastTweetDate" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.last-tweet-date,ucf,attr,lab}" /> <xul:label xbl:inherits="value=lastTweetDate" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=nextTweetDatehidden">
-					<xul:label value="&amp;modules.twitterconnect.bo.doceditor.panel.tweets.Next-tweet-dateLabel;" /> <xul:label xbl:inherits="value=nextTweetDate" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.next-tweet-datelabel,ucf,attr,lab}" /> <xul:label xbl:inherits="value=nextTweetDate" />
 				</xul:hbox>
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />
@@ -852,9 +868,9 @@
 
 			<method name="delete">
 				<body><![CDATA[
-					if (confirm("&amp;modules.twitterconnect.bo.doceditor.actions.Confirm-delete-tweet;"))
+					if (confirm("${transui:m.twitterconnect.bo.doceditor.actions.confirm-delete-tweet,ucf,js}"))
 					{
-						this.executeAction('DeleteDocument', "&amp;modules.twitterconnect.bo.doceditor.actions.Success-deleting-planner;");
+						this.executeAction('DeleteDocument', "${transui:m.twitterconnect.bo.doceditor.actions.success-deleting-planner,ucf,js}");
 					}
 				]]></body>
 			</method>
@@ -889,23 +905,23 @@
 				<xul:vbox>
 					<xul:hbox align="center">
 						<xul:label anonid="counter" value="0" />
-						<xul:label anonid="counter-label" value="&amp;modules.uixul.bo.doceditor.character;" />
+						<xul:label anonid="counter-label" value="${transui:m.uixul.bo.doceditor.character,ucf,attr}" />
 					</xul:hbox>
 					<xul:hbox align="center" anonid="maximum-box" hidden="true">
-						<xul:label value="&amp;modules.uixul.bo.doceditor.Max-count;" />
+						<xul:label value="${transui:m.uixul.bo.doceditor.max-count,ucf,attr}" />
 						<xul:label anonid="max-counter-label" />
-						<xul:label value="&amp;modules.uixul.bo.doceditor.remains;" />
+						<xul:label value="${transui:m.uixul.bo.doceditor.remains,ucf,attr}" />
 						<xul:label anonid="remain-counter" value="0" />
 					</xul:hbox>
 					<xul:toolbar flex="1">
-						<xul:toolbarbutton tooltiptext="&amp;modules.uixul.bo.doceditor.Insert-var;" image="{IconsBase}/small/add.png"
+						<xul:toolbarbutton tooltiptext="${transui:m.uixul.bo.doceditor.insert-var,ucf,attr}" image="{IconsBase}/small/add.png"
 							anonid="varsmenubutton" type="menu" xbl:inherits="hidden=nocvar">
 							<xul:menupopup anonid="varsmenu" onpopupshowing="loadReplacements();">
 								<children includes="menuitem" />
 							</xul:menupopup>
 						</xul:toolbarbutton>
 						<xul:toolbarbutton anonid="helpbutton" image="chrome://global/skin/icons/question-16.png"
-							tooltiptext="&amp;modules.uixul.bo.doceditor.Show-help;"
+							tooltiptext="${transui:m.uixul.bo.doceditor.show-help,ucf,attr}"
 							xbl:inherits="hidden=hidehelp" oncommand="dispatchFieldEvent('fieldHelp');" />
 					</xul:toolbar>
 				</xul:vbox>
