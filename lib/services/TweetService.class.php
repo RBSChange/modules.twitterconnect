@@ -99,8 +99,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	 */
 	private function getInfosForTweets($tweets)
 	{
-		$dateTimeFormat = f_Locale::translateUI('&modules.uixul.bo.datePicker.calendar.dataWriterTimeFormat;');
-		
+		$ls = LocaleService::getInstance();
 		$tweetsInfos = array();
 		foreach ($tweets as $tweet)
 		{
@@ -110,14 +109,14 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 			$tweetInfos['documentId'] = $tweet->getId();
 			
 			$tweetInfos['sendingStatus'] = $sendingStatus;
-			$tweetInfos['sendingStatusLabel'] = f_Locale::translateUI('&modules.twitterconnect.bo.general.sending-statuses.' . ucfirst($sendingStatus) . ';');
+			$tweetInfos['sendingStatusLabel'] = $ls->transBO('m.twitterconnect.bo.general.sending-statuses.' . $sendingStatus, array('ucf'));
 			$tweetInfos['sendingStatusFullLabel'] = $tweetInfos['sendingStatusLabel'];
 			$tweetInfos['accountLabel'] = $tweet->getAccount()->getLabel();
 			$tweetInfos['contents'] = $tweet->getLabel();
 			if ($tweet->getSendingDate())
 			{
-				$tweetInfos['sendingDate'] = date_DateFormat::format($tweet->getUISendingDate(), $dateTimeFormat);
-				$tweetInfos['sendingStatusFullLabel'] .= ' ' . f_Locale::translateUI('&modules.twitterconnect.bo.general.on;') . ' ' . $tweetInfos['sendingDate'];
+				$tweetInfos['sendingDate'] = date_Formatter::toDefaultDateTimeBO($tweet->getUISendingDate());
+				$tweetInfos['sendingStatusFullLabel'] .= ' ' . $ls->transBO('m.twitterconnect.bo.general.on') . ' ' . $tweetInfos['sendingDate'];
 			}
 			
 			$tweetInfos['disableDelete'] = 'false';
@@ -151,7 +150,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 			$model = $relatedDocument->getPersistentModel();
 			$tweetInfos['relatedIcon'] = $model->getIcon();
 			$tweetInfos['relatedIconUrl'] = MediaHelper::getIcon($tweetInfos['relatedIcon'], MediaHelper::SMALL);
-			$tweetInfos['relatedModelLabel'] = f_Locale::translate($model->getLabel());
+			$tweetInfos['relatedModelLabel'] = $ls->transBO($model->getLabelKey());
 			$tweetInfos['relatedCompleteLabel'] = $tweetInfos['relatedLabel'] . ' (' . $tweetInfos['relatedModelLabel'] . ')';
 			
 			$tweetsInfos[] = $tweetInfos;

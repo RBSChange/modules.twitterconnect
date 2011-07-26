@@ -849,7 +849,7 @@
 					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.last-tweet-date,ucf,attr,lab}" /> <xul:label xbl:inherits="value=lastTweetDate" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=nextTweetDatehidden">
-					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.next-tweet-datelabel,ucf,attr,lab}" /> <xul:label xbl:inherits="value=nextTweetDate" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.next-tweet-date,ucf,attr,lab}" /> <xul:label xbl:inherits="value=nextTweetDate" />
 				</xul:hbox>
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />

@@ -61,8 +61,6 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 	 */
 	public function getPlannersInfosByContainerId($document, $service)
 	{
-		$dateTimeFormat = f_Locale::translateUI('&modules.uixul.bo.datePicker.calendar.dataWriterTimeFormat;');
-		
 		$id = $document->getId();
 		$planners = $this->createQuery()->add(Restrictions::eq('containerId', $id))->addOrder(Order::asc('label'))->find();
 		if (f_util_ArrayUtils::isEmpty($planners))
@@ -88,12 +86,12 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 			$plannerInfos['lastTweetDate'] = '-';
 			if ($planner->getUILastTweetDate() !== null)
 			{
-				$plannerInfos['lastTweetDate'] = date_DateFormat::format($planner->getUILastTweetDate(), $dateTimeFormat);
+				$plannerInfos['lastTweetDate'] = date_Formatter::toDefaultDateTimeBO($planner->getUILastTweetDate());
 			}
 			$plannerInfos['nextTweetDate'] = null;
 			if ($planner instanceof twitterconnect_persistentdocument_periodicplanner)
 			{
-				$plannerInfos['nextTweetDate'] = date_DateFormat::format($planner->getUINextTweetDate(), $dateTimeFormat);
+				$plannerInfos['nextTweetDate'] = date_Formatter::toDefaultDateTimeBO($planner->getUINextTweetDate());
 			}
 
 			$plannersInfos[] = $plannerInfos;
