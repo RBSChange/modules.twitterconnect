@@ -29,7 +29,7 @@ class twitterconnect_ListAuthorizedaccountsbywebsiteService extends BaseService
 	{
 		try 
 		{
-			$request = Controller::getInstance()->getContext()->getRequest();
+			$request = change_Controller::getInstance()->getContext()->getRequest();
 			$websiteId = intval($request->getParameter('websiteId', 0));
 			$website = DocumentHelper::getDocumentInstance($websiteId);
 		}

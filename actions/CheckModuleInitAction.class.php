@@ -3,11 +3,11 @@
  * twitterconnect_CheckModuleInitAction
  * @package modules.twitterconnect.actions
  */
-class twitterconnect_CheckModuleInitAction extends f_action_BaseJSONAction
+class twitterconnect_CheckModuleInitAction extends change_JSONAction
 {
 	/**
-	 * @param Context $context
-	 * @param Request $request
+	 * @param change_Context $context
+	 * @param change_Request $request
 	 */
 	public function _execute($context, $request)
 	{

@@ -3,11 +3,11 @@
  * twitterconnect_AuthorizeAction
  * @package modules.twitterconnect.actions
  */
-class twitterconnect_AuthorizeAction extends f_action_BaseAction
+class twitterconnect_AuthorizeAction extends change_Action
 {
 	/**
-	 * @param Context $context
-	 * @param Request $request
+	 * @param change_Context $context
+	 * @param change_Request $request
 	 */
 	public function _execute($context, $request)
 	{
@@ -40,9 +40,9 @@ class twitterconnect_AuthorizeAction extends f_action_BaseAction
 			else
 			{
 				echo $data;
-				return View::NONE;
+				return change_View::NONE;
 			}
-			return View::NONE;
+			return change_View::NONE;
 		}
 		else
 		{
@@ -71,9 +71,9 @@ class twitterconnect_AuthorizeAction extends f_action_BaseAction
 			else
 			{
 				echo $data;
-				return View::NONE;
+				return change_View::NONE;
 			}
 		}
-		return View::NONE;
+		return change_View::NONE;
 	}
 }
