@@ -189,12 +189,15 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	{
 		$tms = twitterconnect_ModuleService::getInstance();
 		$account = $tweet->getAccount();
-		$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
-		$oauthRequest->setParameter('status', $tweet->getLabel());
-		$oauthRequest->setToken($account->getAccessToken());
-		$client = new f_web_oauth_HTTPClient($oauthRequest);
-		$client->getBackendClientInstance()->setTimeOut(0);
-		$infos = $tms->parseTwitterResult($client->execute());
+		$token = $account->getAccessToken();
+		$config = array('consumerKey' => $account->getConsumer()->getConsumerKey(),
+						'consumerSecret' =>  $account->getConsumer()->getConsumerSecret());
+		$client = $token->getHttpClient($config, null, change_HttpClientService::getInstance()->getHttpClientConfig());
+		$client->setUri('http://twitter.com/statuses/update.' .  $tms->getResultFormat());
+		$client->setMethod(Zend_Http_Client::POST);
+		$client->setParameterPost('status', $contents);
+		$request = $client->request();
+		$infos = $tms->parseTwitterResult($request->getBody());
 		$tweet->setSendingInfos($infos);
 		$tweet->setSendingDate(date_Calendar::getInstance()->toString());
 		if (array_key_exists('error', $infos))
@@ -304,12 +307,15 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		{
 			$tms = twitterconnect_ModuleService::getInstance();
 			$account = $document->getAccount();
-			$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/destroy.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
-			$oauthRequest->setParameter('id', $document->getTweetId());
-			$oauthRequest->setToken($account->getAccessToken());
-			$client = new f_web_oauth_HTTPClient($oauthRequest);
-			$client->getBackendClientInstance()->setTimeOut(0);
-			$infos = $tms->parseTwitterResult($client->execute());
+			$token = $account->getAccessToken();
+			$config = array('consumerKey' => $account->getConsumer()->getConsumerKey(),
+						'consumerSecret' =>  $account->getConsumer()->getConsumerSecret());
+			$client = $token->getHttpClient($config, null, change_HttpClientService::getInstance()->getHttpClientConfig());
+			$client->setUri('http://twitter.com/statuses/destroy.' .  $tms->getResultFormat());
+			$client->setMethod(Zend_Http_Client::POST);
+			$client->setParameterPost('id', $document->getTweetId());
+			$request = $client->request();
+			$infos = $tms->parseTwitterResult($request->getBody());
 			if (array_key_exists('error', $infos))
 			{
 				Framework::warn(__METHOD__ . ' ERROR: "' . $infos['error'] . '" for twitter id '  . $document->getTweetId());

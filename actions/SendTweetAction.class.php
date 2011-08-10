@@ -20,12 +20,16 @@ class twitterconnect_SendTweetAction extends change_JSONAction
 		foreach (explode(',', $request->getParameter('accounts')) as $accountId)
 		{
 			$account = DocumentHelper::getDocumentInstance($accountId);
-			$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
-			$oauthRequest->setParameter('status', $contents);
-			$oauthRequest->setToken($account->getAccessToken());
-			$client = new f_web_oauth_HTTPClient($oauthRequest);
-			$client->getBackendClientInstance()->setTimeOut(0);
-			$infos = $tms->parseTwitterResult($client->execute());
+			$token = $account->getAccessToken();
+			$ms = ModuleService::getInstance();
+			$config = array('consumerKey' => $ms->getPreferenceValue('twitterconnect', 'consumerKey'),
+							'consumerSecret' => $ms->getPreferenceValue('twitterconnect', 'consumerSecret'));
+			$client = $token->getHttpClient($config, null, Framework::getHttpClientConfig());
+			$client->setUri('http://twitter.com/statuses/update.xml');
+			$client->setMethod(Zend_Http_Client::POST);
+			$client->setParameterPost('status', $contents);
+			$response = $client->request();
+			$infos = $tms->parseTwitterResult($response->getBody());
 			if (array_key_exists('error', $infos))
 			{
 				$errors[] = f_Locale::translate('&modules.twitterconnect.bo.general.error.Error-sending-tweet;', array('account' => $account->getLabel(), 'error' => $infos['error']));
@@ -52,8 +56,7 @@ class twitterconnect_SendTweetAction extends change_JSONAction
 		}
 		
 		$pageSize = $request->getParameter('pageSize');
-		$result = twitterconnect_ModuleService::getInstance()->getInfosByDocumentId($request->getParameter('relatedId'), $module, 0, $pageSize);
-		
+		$result = twitterconnect_ModuleService::getInstance()->getInfosByDocumentId($request->getParameter('relatedId'), $module, 0, $pageSize);		
 		return $this->sendJSON($result);
 	}
 }
