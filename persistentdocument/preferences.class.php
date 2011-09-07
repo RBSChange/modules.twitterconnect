@@ -10,6 +10,6 @@ class twitterconnect_persistentdocument_preferences extends twitterconnect_persi
 	 */
 	public function getLabel()
 	{
-		return f_Locale::translateUI(parent::getLabel());
+		return LocaleService::getInstance()->transBO('m.twitterconnect.document.preferences.document-name', array('ucf'));
 	}
 }
