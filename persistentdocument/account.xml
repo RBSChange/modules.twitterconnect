@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<document xmlns="http://www.rbs.fr/schema/change-document/1.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/1.0.xsd"
-	model-version="1.0" has-url="false" icon="user">
-	<properties>
-		<add name="login" type="String" min-occurs="1" />
-		<add name="accessToken" type="Lob" />
-		<add name="authorizationDate" type="DateTime" />
-		<add name="website" type="modules_website/website" max-occurs="-1" />
-	</properties>
-	<statuses default="ACTIVE" />
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd" model-version="1.0" has-url="false" icon="user">
+  <properties>
+    <property name="login" type="String" min-occurs="1"/>
+    <property name="accessToken" type="Lob"/>
+    <property name="authorizationDate" type="DateTime"/>
+    <property name="website" type="modules_website/website" max-occurs="-1"/>
+  </properties>
+  <statuses default="ACTIVE"/>
 </document>

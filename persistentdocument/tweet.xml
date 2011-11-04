@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/1.0.xsd" model-version="1.0"
-	icon="tweet" has-url="false" backoffice-indexable="false">
-	<properties>
-		<add name="accountId" type="Integer" min-occurs="1" />
-		<add name="websiteId" type="Integer" min-occurs="1" />
-		<add name="relatedId" type="Integer" />
-		<add name="containerId" type="Integer" />
-		<add name="plannerId" type="Integer" />
-		<add name="sendingStatus" type="String" min-occurs="1" from-list="modules_twitterconnect/sendinstatuses" />
-		<add name="sendingInfos" type="Lob" />
-		<add name="sendingDate" type="DateTime" />
-		<add name="tweetId" type="String" />
-		<add name="displayPriority" type="Integer" />
-	</properties>
-	<statuses default="ACTIVE" />
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd" model-version="1.0" icon="tweet" has-url="false" backoffice-indexable="false">
+  <properties>
+    <property name="accountId" type="Integer" min-occurs="1"/>
+    <property name="websiteId" type="Integer" min-occurs="1"/>
+    <property name="relatedId" type="Integer"/>
+    <property name="containerId" type="Integer"/>
+    <property name="plannerId" type="Integer"/>
+    <property name="sendingStatus" type="String" min-occurs="1" from-list="modules_twitterconnect/sendinstatuses"/>
+    <property name="sendingInfos" type="Lob"/>
+    <property name="sendingDate" type="DateTime"/>
+    <property name="tweetId" type="String"/>
+    <property name="displayPriority" type="Integer"/>
+  </properties>
+  <statuses default="ACTIVE"/>
 </document>
