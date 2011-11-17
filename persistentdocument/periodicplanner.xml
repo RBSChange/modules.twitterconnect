@@ -3,7 +3,9 @@
 	xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/1.0.xsd" model-version="1.0"
 	extend="modules_twitterconnect/planner">
 	<properties>
-		<add name="period" type="String" />
+		<add name="period" type="String" db-size="5" min-occurs="1">
+			<constraints>matches:^[1-9][0-9]{0,2}(h|d|w|m|y)$#modules.twitterconnect.bo.general.error.Error-must-select-positive-period-value</constraints>
+		</add>
 		<add name="nextTweetDate" type="DateTime" />
 	</properties>
 </document>

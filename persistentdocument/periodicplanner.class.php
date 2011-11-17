@@ -13,6 +13,13 @@ class twitterconnect_persistentdocument_periodicplanner extends twitterconnect_p
 		$period = $this->getPeriod();
 		$value = substr($period, 0, -1);
 		$unit = substr($period, -1);
-		return f_Locale::translate('&modules.twitterconnect.bo.general.Period-'.$unit.';', array('period' => $value));
+		if ($value == 1)
+		{
+			return LocaleService::getInstance()->transFO('m.twitterconnect.bo.general.period-one-'.$unit, array('ucf'), array('period' => $value));
+		}
+		else
+		{
+			return LocaleService::getInstance()->transFO('m.twitterconnect.bo.general.period-'.$unit, array('ucf'), array('period' => $value));
+		}
 	}
 }

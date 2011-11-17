@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.twitterconnect.bo.general.error" lcid="fr_FR">
-  <key id="error-sending-tweet">l'erreur ″{error}″ s'est produite lors de l'envoi du tweet sur le compte ″{account}″.</key>
+	<key id="error-sending-tweet">l'erreur ″{error}″ s'est produite lors de l'envoi du tweet sur le compte ″{account}″.</key>
+	<key id="error-must-select-positive-period-value">La période doit être comprise entre 1 et 999 inclus.</key>
 </i18n>
