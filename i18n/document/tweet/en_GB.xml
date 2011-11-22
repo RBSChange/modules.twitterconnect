@@ -23,8 +23,8 @@
   <key id="sendingdate-help">[TO TRANSLATE] sendingDate-help</key>
   <key id="tweetid">[TO TRANSLATE] tweetId</key>
   <key id="tweetid-help">[TO TRANSLATE] tweetId-help</key>
-  <key id="startpublicationdate">Début de publication</key>
-  <key id="startpublicationdate-help">A partir de cette date, le document sera publié. Si le champ est vide, la publication du document commencera dès maintenant.</key>
-  <key id="endpublicationdate">Fin de publication</key>
-  <key id="endpublicationdate-help">A partir de cette date, le document ne sera plus publié. Si le champ est vide, le document restera indéfiniment publié.</key>
+  <key id="startpublicationdate">Start of publication date</key>
+  <key id="startpublicationdate-help">From this date on, the document will be published. If left empty, the document will be published immediately.</key>
+  <key id="endpublicationdate">End of publication date</key>
+  <key id="endpublicationdate-help">From this date on, the document will no longer be published. If left empty, the document will be published indefinitely.</key>
 </i18n>
