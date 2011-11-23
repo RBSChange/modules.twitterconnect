@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <i18n baseKey="m.twitterconnect.document.tweet" lcid="en_GB">
   <key id="document-name">tweet</key>
-  <key id="label">[TO TRANSLATE] label</key>
-  <key id="label-help">[TO TRANSLATE] label-help</key>
-  <key id="contents">[TO TRANSLATE] contents</key>
-  <key id="contents-help">[TO TRANSLATE] contents-help</key>
-  <key id="accountid">[TO TRANSLATE] accountId</key>
-  <key id="accountid-help">[TO TRANSLATE] accountId-help</key>
-  <key id="websiteid">[TO TRANSLATE] websiteId</key>
-  <key id="websiteid-help">[TO TRANSLATE] websiteId-help</key>
-  <key id="relatedid">[TO TRANSLATE] relatedId</key>
-  <key id="relatedid-help">[TO TRANSLATE] relatedId-help</key>
-  <key id="containerid">[TO TRANSLATE] containerId</key>
-  <key id="containerid-help">[TO TRANSLATE] containerId-help</key>
-  <key id="plannerid">[TO TRANSLATE] plannerId</key>
-  <key id="plannerid-help">[TO TRANSLATE] plannerId-help</key>
-  <key id="sendingstatus">[TO TRANSLATE] sendingStatus</key>
-  <key id="sendingstatus-help">[TO TRANSLATE] sendingStatus-help</key>
-  <key id="sendinginfos">[TO TRANSLATE] sendingInfos</key>
-  <key id="sendinginfos-help">[TO TRANSLATE] sendingInfos-help</key>
-  <key id="sendingdate">[TO TRANSLATE] sendingDate</key>
-  <key id="sendingdate-help">[TO TRANSLATE] sendingDate-help</key>
-  <key id="tweetid">[TO TRANSLATE] tweetId</key>
-  <key id="tweetid-help">[TO TRANSLATE] tweetId-help</key>
   <key id="startpublicationdate">Start of publication date</key>
   <key id="startpublicationdate-help">From this date on, the document will be published. If left empty, the document will be published immediately.</key>
   <key id="endpublicationdate">End of publication date</key>
