@@ -2,18 +2,30 @@
 <i18n baseKey="m.twitterconnect.bo.doceditor.panel.tweets" lcid="en_GB">
   <key id="send">tweet</key>
   <key id="send-now">tweet now</key>
-  <key id="send-on-publish">tweet on publish</key>
-  <key id="plan">plan</key>
+  <key id="send-on-publish">tweet when publishing</key>
+  <key id="plan">scheduled</key>
   <key id="tweet-list">tweet list</key>
-  <key id="title">post a message on twitter</key>
-  <key id="on-account">on account</key>
-  <key id="on-accounts">on accounts</key>
+  <key id="title">post a message to Twitter</key>
+  <key id="on-account">to the account</key>
+  <key id="on-accounts">to the accounts</key>
   <key id="website">website</key>
-  <key id="accounts">twitter accounts</key>
+  <key id="accounts">Twitter accounts</key>
   <key id="contents">tweet contents</key>
   <key id="label">label</key>
   <key id="periodic">periodic</key>
   <key id="last-tweet-date">last tweet</key>
   <key id="next-tweet-date">next tweet</key>
   <key id="related-document">related document</key>
+  <key id="error-document-has-no-allowed-model">This document has not been declared as a container.</key>
+  <key id="error-document-not-in-a-website">This document does not belong to any websites.</key>
+  <key id="error-no-account-selected">You must select at least one account to which you want to post your tweet. If you have not defined an account yet, please go to the ″Interconnection to Twitter″ module</key>
+  <key id="error-no-date-to-plan">You must select a date to schedule a tweet.</key>
+  <key id="error-no-tweet-to-send">You must enter your tweet.</key>
+  <key id="items-loading">loading substitutions…</key>
+  <key id="no-substitution">no substitutions found</key>
+  <key id="success-planning-periodic-tweets-on-contained-documents">Periodic tweeting has been scheduled for the contained documents.</key>
+  <key id="success-planning-tweet">The tweet has been scheduled successfully.</key>
+  <key id="success-planning-tweet-on-publish">The tweet has been scheduled for publication.</key>
+  <key id="success-planning-tweets-on-contained-document-publish">The tweets related to the contained documents will be sent when they are published.</key>
+  <key id="success-sending-tweet">Your tweet has been posted successfully.</key>
 </i18n>

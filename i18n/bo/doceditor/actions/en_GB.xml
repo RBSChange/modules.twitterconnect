@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<i18n baseKey="m.twitterconnect.bo.doceditor.actions" lcid="en_GB">
+  <key id="confirm-delete-tweet">Are you sure you want to delete this tweet? Be careful, it will also delete it on Twitter.</key>
+  <key id="success-deleting-planner">The automatic publication has been successfully deleted.</key>
+  <key id="success-deleting-tweet">The tweet has been deleted successfully.</key>
+  <key id="success-resending-tweet">Your tweet has been posted successfully.</key>
+</i18n>
