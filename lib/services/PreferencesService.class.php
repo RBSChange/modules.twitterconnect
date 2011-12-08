@@ -1,8 +1,4 @@
 <?php
-/**
- * twitterconnect_PreferencesService
- * @package modules.twitterconnect
- */
 class twitterconnect_PreferencesService extends f_persistentdocument_DocumentService
 {
 	/**
@@ -38,7 +34,7 @@ class twitterconnect_PreferencesService extends f_persistentdocument_DocumentSer
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/preferences');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/preferences');
 	}
 	
 	/**
@@ -49,6 +45,16 @@ class twitterconnect_PreferencesService extends f_persistentdocument_DocumentSer
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/preferences', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/preferences', false);
+	}
+	
+	/**
+	 * @param customer_persistentdocument_preferences $document
+	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @return void
+	 */
+	protected function preSave($document, $parentNodeId)
+	{
+		$document->setLabel('twitterconnect');
 	}
 }
