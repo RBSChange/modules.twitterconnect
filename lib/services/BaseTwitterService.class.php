@@ -36,7 +36,7 @@ abstract class twitterconnect_BaseTwitterService extends BaseService
 	
 	/**
 	 * Implement this method if the document is not located in a single website.
-	 * @example catalog_ProductService::getWebsitesForTweets()
+	 * @see For example: catalog_ProductService::getWebsitesForTweets()
 	 * @see twitterconnect_ModuleService::getInfosByDocumentId()
 	 * 
 	 * @param f_persistentdocument_PersistentDocument $document
@@ -53,7 +53,7 @@ abstract class twitterconnect_BaseTwitterService extends BaseService
 
 	/**
 	 * Implement this method to specialize the application of the "tweet on publish" meta.
-	 * @example catalog_ProductService::setTweetOnPublishMeta()
+	 * @see For example: catalog_ProductService::setTweetOnPublishMeta()
 	 * 
 	 * @see twitterconnect_TweetService::setTweetOnPublishMeta()
 	 * @param f_persistentdocument_PersistentDocument $document
@@ -65,7 +65,7 @@ abstract class twitterconnect_BaseTwitterService extends BaseService
 
 	/**
 	 * Implement this method to specialize the removal of the "tweet on publish" meta.
-	 * @example catalog_ProductService::removeTweetOnPublishMeta()
+	 * @see For example: catalog_ProductService::removeTweetOnPublishMeta()
 	 * 
 	 * @see twitterconnect_TweetService::removeTweetOnPublishMeta()
 	 * @param f_persistentdocument_PersistentDocument $document
@@ -87,7 +87,7 @@ abstract class twitterconnect_BaseTwitterService extends BaseService
 
 	/**
 	 * Implement this method to specify the document that should be tweeted if this document is published.
-	 * @example catalog_CompiledproductService::getRelatedForTweets()
+	 * @see For example: catalog_CompiledproductService::getRelatedForTweets()
 	 * 
 	 * @see twitterconnect_OnpublishplannerService::sendTweetsByRelatedDocument()
 	 * @param f_persistentdocument_PersistentDocument $document
