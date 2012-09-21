@@ -10,6 +10,6 @@ class twitterconnect_persistentdocument_onpublishplanner extends twitterconnect_
 	 */
 	public function getPlannerTypeLabel()
 	{
-		return f_Locale::translateUI('&modules.twitterconnect.bo.general.planner-types.On-publish;');
+		return LocaleService::getInstance()->trans('m.twitterconnect.bo.general.planner-types.on-publish', array('ucf'));
 	}
 }

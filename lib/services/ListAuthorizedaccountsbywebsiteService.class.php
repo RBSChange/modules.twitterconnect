@@ -1,29 +1,12 @@
 <?php
 /**
  * @package module.twitterconnect
+ * @method twitterconnect_ListAuthorizedaccountsbywebsiteService getInstance()
  */
-class twitterconnect_ListAuthorizedaccountsbywebsiteService extends BaseService
+class twitterconnect_ListAuthorizedaccountsbywebsiteService extends change_BaseService implements list_ListItemsService
 {
 	/**
-	 * @var twitterconnect_ListAccountsbywebsiteService
-	 */
-	private static $instance;
-	private $items = null;
-
-	/**
-	 * @return twitterconnect_ListAccountsbywebsiteService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * @return array<list_Item>
+	 * @return list_Item[]
 	 */
 	public final function getItems()
 	{

@@ -3,23 +3,18 @@
 	<binding fileName="modules/list/persistentdocument/import/list_binding.xml" />
 	<binding fileName="modules/task/persistentdocument/import/task_binding.xml" />
 	<binding fileName="modules/twitterconnect/persistentdocument/import/twitterconnect_binding.xml" />
-
 	<systemfolder module="list" relatedmodule="twitterconnect">
-		<dynamiclist listid="modules_twitterconnect/authorizedaccountsbywebsite" label="Comptes twitter par site"
-			description="Liste des comtpes twitter autorisés pour un site donné." />
-			
+		<dynamiclist listid="modules_twitterconnect/authorizedaccountsbywebsite" label="Comptes twitter par site" description="Liste des comtpes twitter autorisés pour un site donné." />
 		<staticlist listid="modules_twitterconnect/sendinstatuses" label="Statuts d'envoi des tweets">
-			<staticitem value="sent" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Sent;" />
-			<staticitem value="planned" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Planned;" />
-			<staticitem value="error" label="&amp;modules.twitterconnect.bo.geneal.sending-statuses.Error;" />
+			<staticitem value="sent" label="m.twitterconnect.bo.geneal.sending-statuses.sent" />
+			<staticitem value="planned" label="m.twitterconnect.bo.geneal.sending-statuses.planned" />
+			<staticitem value="error" label="m.twitterconnect.bo.geneal.sending-statuses.error" />
 		</staticlist>
 	</systemfolder>
-	
 	<systemfolder module="task" relatedmodule="twitterconnect">
 		<plannedtask label="Envoi des tweets planifiés" systemtaskclassname="twitterconnect_SendPlannedTweetsTask" />
 	</systemfolder>
-	
 	<rootfolder module="preferences">
-		<preferences />
+		<preferences/>
 	</rootfolder>
 </script>

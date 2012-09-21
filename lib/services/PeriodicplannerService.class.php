@@ -1,27 +1,10 @@
 <?php
 /**
- * twitterconnect_PeriodicplannerService
  * @package modules.twitterconnect
+ * @method twitterconnect_PeriodicplannerService getInstance()
  */
 class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerService
 {
-	/**
-	 * @var twitterconnect_PeriodicplannerService
-	 */
-	private static $instance;
-
-	/**
-	 * @return twitterconnect_PeriodicplannerService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return twitterconnect_persistentdocument_periodicplanner
 	 */
@@ -38,7 +21,7 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/periodicplanner');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/periodicplanner');
 	}
 	
 	/**
@@ -49,7 +32,7 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/periodicplanner', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/periodicplanner', false);
 	}
 	
 	/**
@@ -97,7 +80,7 @@ class twitterconnect_PeriodicplannerService extends twitterconnect_PlannerServic
 	
 	/**
 	 * @param twitterconnect_persistentdocument_periodicplanner $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function preSave($document, $parentNodeId = null)

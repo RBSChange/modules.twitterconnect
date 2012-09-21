@@ -1,7 +1,7 @@
 <?php
 /**
- * twitterconnect_TweetService
  * @package modules.twitterconnect
+ * @method twitterconnect_TweetService getInstance()
  */
 class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 {
@@ -11,23 +11,6 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	const STATUS_ERROR = 'error';
 	const META_TWEET_ON_PUBLISH = 'modules.twitterconnect.tweetOnPublish';
 	const META_TWEET_ON_PUBLISH_FOR_WEBSITE = 'modules.twitterconnect.tweetOnPublishForWebsite';
-	
-	/**
-	 * @var twitterconnect_TweetService
-	 */
-	private static $instance;
-
-	/**
-	 * @return twitterconnect_TweetService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
 
 	/**
 	 * @return twitterconnect_persistentdocument_tweet
@@ -45,7 +28,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/tweet');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/tweet');
 	}
 	
 	/**
@@ -56,12 +39,12 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/tweet', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/tweet', false);
 	}
 	
 	/**
 	 * @param f_persistentdocument_PersistentDocument $document
-	 * @param BaseService $service
+	 * @param change_BaseService $service
 	 * @param integer $websiteId
 	 * @return array
 	 */
@@ -72,9 +55,9 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	
 	/**
 	 * @param f_persistentdocument_PersistentDocument $document
-	 * @param BaseService $service
-	 * @param Integer $startIndex
-	 * @param Integer $pageSize
+	 * @param change_BaseService $service
+	 * @param integer $startIndex
+	 * @param integer $pageSize
 	 * @return array
 	 */
 	public function getTweetsInfosByDocumentId($document, $service, $startIndex, $pageSize)
@@ -100,6 +83,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	private function getInfosForTweets($tweets)
 	{
 		$ls = LocaleService::getInstance();
+		
 		$tweetsInfos = array();
 		foreach ($tweets as $tweet)
 		{
@@ -109,14 +93,14 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 			$tweetInfos['documentId'] = $tweet->getId();
 			
 			$tweetInfos['sendingStatus'] = $sendingStatus;
-			$tweetInfos['sendingStatusLabel'] = $ls->transBO('m.twitterconnect.bo.general.sending-statuses.' . $sendingStatus, array('ucf'));
+			$tweetInfos['sendingStatusLabel'] = $ls->trans('m.twitterconnect.bo.general.sending-statuses.' . $sendingStatus, array('ucf'));
 			$tweetInfos['sendingStatusFullLabel'] = $tweetInfos['sendingStatusLabel'];
 			$tweetInfos['accountLabel'] = $tweet->getAccount()->getLabel();
 			$tweetInfos['contents'] = $tweet->getLabel();
 			if ($tweet->getSendingDate())
 			{
 				$tweetInfos['sendingDate'] = date_Formatter::toDefaultDateTimeBO($tweet->getUISendingDate());
-				$tweetInfos['sendingStatusFullLabel'] .= ' ' . $ls->transBO('m.twitterconnect.bo.general.on') . ' ' . $tweetInfos['sendingDate'];
+				$tweetInfos['sendingStatusFullLabel'] .= ' ' . $ls->trans('m.twitterconnect.bo.general.on') . ' ' . $tweetInfos['sendingDate'];
 			}
 			
 			$tweetInfos['disableDelete'] = 'false';
@@ -150,7 +134,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 			$model = $relatedDocument->getPersistentModel();
 			$tweetInfos['relatedIcon'] = $model->getIcon();
 			$tweetInfos['relatedIconUrl'] = MediaHelper::getIcon($tweetInfos['relatedIcon'], MediaHelper::SMALL);
-			$tweetInfos['relatedModelLabel'] = $ls->transBO($model->getLabelKey());
+			$tweetInfos['relatedModelLabel'] = $ls->trans($model->getLabelKey());
 			$tweetInfos['relatedCompleteLabel'] = $tweetInfos['relatedLabel'] . ' (' . $tweetInfos['relatedModelLabel'] . ')';
 			
 			$tweetsInfos[] = $tweetInfos;
@@ -194,9 +178,9 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 						'consumerSecret' =>  $account->getConsumer()->getConsumerSecret());
 		$client = $token->getHttpClient($config, null, change_HttpClientService::getInstance()->getHttpClientConfig());
 		$client->setUri('http://twitter.com/statuses/update.' .  $tms->getResultFormat());
-		$client->setMethod(Zend_Http_Client::POST);
-		$client->setParameterPost('status', $contents);
-		$request = $client->request();
+		$client->setMethod(\Zend\Http\Request::METHOD_POST);
+		$client->setParameterPost(array('status' => $tweet->getLabel()));
+		$request = $client->send();
 		$infos = $tms->parseTwitterResult($request->getBody());
 		$tweet->setSendingInfos($infos);
 		$tweet->setSendingDate(date_Calendar::getInstance()->toString());
@@ -244,7 +228,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	
 	/**
 	 * @param twitterconnect_persistentdocument_tweet $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
+	 * @param integer $parentNodeId Parent node ID where to save the document (optionnal => can be null !).
 	 * @return void
 	 */
 	protected function preSave($document, $parentNodeId = null)
@@ -262,7 +246,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 
 	/**
 	 * @param twitterconnect_persistentdocument_tweet $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document.
+	 * @param integer $parentNodeId Parent node ID where to save the document.
 	 * @return void
 	 */
 	protected function preInsert($document, $parentNodeId = null)
@@ -285,7 +269,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 
 	/**
 	 * @param twitterconnect_persistentdocument_tweet $document
-	 * @param Integer $parentNodeId Parent node ID where to save the document.
+	 * @param integer $parentNodeId Parent node ID where to save the document.
 	 * @return void
 	 */
 	protected function postSave($document, $parentNodeId = null)
@@ -312,9 +296,9 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 						'consumerSecret' =>  $account->getConsumer()->getConsumerSecret());
 			$client = $token->getHttpClient($config, null, change_HttpClientService::getInstance()->getHttpClientConfig());
 			$client->setUri('http://twitter.com/statuses/destroy.' .  $tms->getResultFormat());
-			$client->setMethod(Zend_Http_Client::POST);
-			$client->setParameterPost('id', $document->getTweetId());
-			$request = $client->request();
+			$client->setMethod(\Zend\Http\Request::METHOD_POST);
+			$client->setParameterPost(array('id' => $document->getTweetId()));
+			$request = $client->send();
 			$infos = $tms->parseTwitterResult($request->getBody());
 			if (array_key_exists('error', $infos))
 			{

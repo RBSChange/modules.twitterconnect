@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.general.error" lcid="en_GB">
-  <key id="error-sending-tweet">The error ″{error}″ occurred while sending the tweet to the account ″{account}″.</key>
+	<key id="error-sending-tweet">The error ″{error}″ occurred while sending the tweet to the account ″{account}″.</key>
 </i18n>

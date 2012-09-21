@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.useractionlogger" lcid="en_GB">
-  <key id="delete-account">delete.account {documentlabel}</key>
-  <key id="delete-tweet">delete.tweet {documentlabel}</key>
-  <key id="insert-account">insert.account {documentlabel}</key>
-  <key id="log-delete-account">log-delete-account</key>
-  <key id="log-delete-tweet">log-delete-tweet</key>
-  <key id="log-insert-account">log-insert-account</key>
-  <key id="log-move-account">log-move-account</key>
-  <key id="log-update-account">log-update-account</key>
-  <key id="move-account">move.account {destinationlabel} {documentlabel}</key>
-  <key id="update-account">update.account {documentlabel}</key>
+	<key id="delete-account">delete.account {documentlabel}</key>
+	<key id="delete-tweet">delete.tweet {documentlabel}</key>
+	<key id="insert-account">insert.account {documentlabel}</key>
+	<key id="log-delete-account">log-delete-account</key>
+	<key id="log-delete-tweet">log-delete-tweet</key>
+	<key id="log-insert-account">log-insert-account</key>
+	<key id="log-move-account">log-move-account</key>
+	<key id="log-update-account">log-update-account</key>
+	<key id="move-account">move.account {destinationlabel} {documentlabel}</key>
+	<key id="update-account">update.account {documentlabel}</key>
 </i18n>

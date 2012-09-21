@@ -1,7 +1,6 @@
 <?php
 /**
- * twitterconnect_AuthorizeAction
- * @package modules.twitterconnect.actions
+ * @package modules.twitterconnect
  */
 class twitterconnect_AuthorizeAction extends change_Action
 {
@@ -15,10 +14,7 @@ class twitterconnect_AuthorizeAction extends change_Action
 		$oauthConsumer = $account->getConsumer();
 		if ($request->hasParameter('oauth_token') && $request->hasParameter('oauth_verifier'))
 		{
-			$token = $oauthConsumer->getAccessToken(
-                 $_GET,
-                 unserialize($account->getMeta('oauth.token'))
-             );
+			$token = $oauthConsumer->getAccessToken($_GET, unserialize($account->getMeta('oauth.token')));
 			$account->setAccesstoken($token);
 			$account->setAuthorizationdate(date_Calendar::now());
 			$account->save();

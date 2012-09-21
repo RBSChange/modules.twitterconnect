@@ -6,13 +6,12 @@
 class twitterconnect_persistentdocument_account extends twitterconnect_persistentdocument_accountbase 
 {
 	/**
-	 *
-	 * @var Zend_Oauth_Consumer 
+	 * @var \ZendOAuth\Consumer
 	 */
 	private $consumer = null;
 	
 	/**
-	 * @return Zend_Oauth_Consumer
+	 * @return \ZendOAuth\Consumer
 	 */
 	public function getConsumer()
 	{
@@ -20,10 +19,10 @@ class twitterconnect_persistentdocument_account extends twitterconnect_persisten
 		{
 			$ms = ModuleService::getInstance();
 			$config = array('consumerKey' => $ms->getPreferenceValue('twitterconnect', 'consumerKey'),
-			'consumerSecret' => $ms->getPreferenceValue('twitterconnect', 'consumerSecret'),
-			'callbackUrl' => LinkHelper::getUIParametrizedLink(array('module' => 'twitterconnect', 'action' => 'Authorize', 'cmpref' => $this->getId()))->getUrl(),
-			'siteUrl' => 'http://twitter.com/oauth');
-			$this->consumer = new Zend_Oauth_Consumer($config);
+				'consumerSecret' => $ms->getPreferenceValue('twitterconnect', 'consumerSecret'),
+				'callbackUrl' => LinkHelper::getUIParametrizedLink(array('module' => 'twitterconnect', 'action' => 'Authorize', 'cmpref' => $this->getId()))->getUrl(),
+				'siteUrl' => 'http://twitter.com/oauth');
+			$this->consumer = new \ZendOAuth\Consumer($config);
 		}
 		return $this->consumer;
 	}
@@ -37,7 +36,7 @@ class twitterconnect_persistentdocument_account extends twitterconnect_persisten
 	}
 	
 	/**
-	 * @return Zend_Oauth_Token_Access
+	 * @return \ZendOAuth\Token\Access
 	 */
 	public function getAccessToken()
 	{
@@ -50,7 +49,7 @@ class twitterconnect_persistentdocument_account extends twitterconnect_persisten
 	}
 	
 	/**
-	 * @param Zend_Oauth_Token_Access $token
+	 * @param \ZendOAuth\Token\Access $token
 	 */
 	public function setAccessToken($token)
 	{

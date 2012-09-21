@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.doceditor.tab" lcid="en_GB">
-  <key id="tweets">tweets</key>
-  <key id="automatic-tweets">automatic tweets</key>
+	<key id="tweets">tweets</key>
+	<key id="automatic-tweets">automatic tweets</key>
 </i18n>

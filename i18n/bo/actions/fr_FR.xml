@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.actions" lcid="fr_FR">
-  <key id="create_">créer</key>
-  <key id="create-account">ajouter un compte twitter</key>
-  <key id="authorize-account">autoriser le compte</key>
-  <key id="resend">retenter l'envoi</key>
+	<key id="create_">créer</key>
+	<key id="create-account">ajouter un compte twitter</key>
+	<key id="authorize-account">autoriser le compte</key>
+	<key id="resend">retenter l'envoi</key>
 </i18n>

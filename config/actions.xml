@@ -55,7 +55,7 @@
 				var edit = this.getActionInfo('editPreferences');														
 				var callback = function (notif, bI) {bI.module.editPreferences(bI.id)};
 				var buttons = [{callback:callback, label:edit.label, accessKey:"", id: result.contents.id, module:this}];
-				notifZone.appendNotification("${trans:m.twitterconnect.bo.general.notification.No-Account,ucf,js}", 
+				notifZone.appendNotification("${trans:m.twitterconnect.bo.general.notification.no-account,ucf,js}", 
 						'editPreferences', wToolkit.getIcon('edit', 'small'), notifZone.PRIORITY_CRITICAL_BLOCK, buttons);
 			}
 			else

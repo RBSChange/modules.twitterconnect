@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/static/schema/change-document/4.0.xsd" model-version="1.0" icon="tweet-planner" has-url="false" backoffice-indexable="false">
-  <properties>
-    <property name="contents" type="String" min-occurs="1"/>
-    <property name="account" type="modules_twitterconnect/account" max-occurs="-1"/>
-    <property name="websiteId" type="Integer" min-occurs="1"/>
-    <property name="containerId" type="Integer" min-occurs="1"/>
-    <property name="modelName" type="String" min-occurs="1"/>
-    <property name="moduleName" type="String" min-occurs="1"/>
-    <property name="lastTweetDate" type="DateTime"/>
-  </properties>
-  <statuses default="ACTIVE"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://www.rbs.fr/schema/change-document/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rbs.fr/schema/change-document/1.0 http://www.rbschange.fr/schema/persistentdocument-4.0.xsd" model-version="1.0" icon="tweet-planner" has-url="false" backoffice-indexable="false">
+	<properties>
+		<property name="contents" type="String" required="true" />
+		<property name="account" type="DocumentArray" document-type="modules_twitterconnect/account" />
+		<property name="websiteId" type="Integer" required="true" />
+		<property name="containerId" type="Integer" required="true" />
+		<property name="modelName" type="String" required="true" />
+		<property name="moduleName" type="String" required="true" />
+		<property name="lastTweetDate" type="DateTime" />
+	</properties>
+	<statuses default="ACTIVE" />
 </document>

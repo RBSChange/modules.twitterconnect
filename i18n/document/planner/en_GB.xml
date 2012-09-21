@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.document.planner" lcid="en_GB">
-  <key id="document-name">scheduler</key>
-  <key id="label">label</key>
-  <key id="accounts">accounts</key>
-  <key id="containerid">container</key>
-  <key id="websiteid">website</key>
+	<key id="document-name">scheduler</key>
+	<key id="label">label</key>
+	<key id="accounts">accounts</key>
+	<key id="containerid">container</key>
+	<key id="websiteid">website</key>
 </i18n>

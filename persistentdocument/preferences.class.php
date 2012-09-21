@@ -1,16 +1,15 @@
 <?php
 /**
- * @package twitterconnect
+ * Class where to put your custom methods for document twitterconnect_persistentdocument_preferences
+ * @package modules.twitterconnect.persistentdocument
  */
 class twitterconnect_persistentdocument_preferences extends twitterconnect_persistentdocument_preferencesbase 
 {
 	/**
-	 * Define the label of the tree node of the document.
-	 * By default, this method returns the label property value.
-	 * @return string
+	 * @retrun String
 	 */
-	public function getTreeNodeLabel()
+	public function getLabel()
 	{
-		return LocaleService::getInstance()->trans('m.twitterconnect.bo.general.module-name', array('ucf'));
+		return LocaleService::getInstance()->trans('m.twitterconnect.document.preferences.document-name', array('ucf'));
 	}
 }

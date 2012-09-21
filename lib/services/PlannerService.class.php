@@ -1,29 +1,12 @@
 <?php
 /**
- * twitterconnect_PlannerService
  * @package modules.twitterconnect
+ * @method twitterconnect_PlannerService getInstance()
  */
 class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 {
 	const TYPE_ON_PUBLISH = 'onpublish';
 	const TYPE_PERIODIC = 'periodic';
-	
-	/**
-	 * @var twitterconnect_PlannerService
-	 */
-	private static $instance;
-
-	/**
-	 * @return twitterconnect_PlannerService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
 
 	/**
 	 * @return twitterconnect_persistentdocument_planner
@@ -41,7 +24,7 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/planner');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/planner');
 	}
 	
 	/**
@@ -52,12 +35,12 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/planner', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/planner', false);
 	}
 	
 	/**
 	 * @param f_persistentdocument_PersistentDocument $document
-	 * @param BaseService $service
+	 * @param change_BaseService $service
 	 */
 	public function getPlannersInfosByContainerId($document, $service)
 	{
@@ -71,6 +54,7 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 		$plannersInfos = array();
 		foreach ($planners as $planner)
 		{
+			/* @var $planner twitterconnect_persistentdocument_planner */
 			$plannerInfos = array();
 			$plannerInfos['documentId'] = $planner->getId();
 			$plannerInfos['label'] = $planner->getLabel();
@@ -101,7 +85,7 @@ class twitterconnect_PlannerService extends f_persistentdocument_DocumentService
 	
 	/**
 	 * @param f_persistentdocument_PersistentDocument $document
-	 * @param BaseService $service
+	 * @param change_BaseService $service
 	 * @param integer $websiteId
 	 * @return array
 	 */

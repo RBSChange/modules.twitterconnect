@@ -5,15 +5,15 @@
  */
 class twitterconnect_TweetScriptDocumentElement extends import_ScriptDocumentElement
 {
-    /**
-     * @return twitterconnect_persistentdocument_tweet
-     */
-    protected function initPersistentDocument()
-    {
-    	return twitterconnect_TweetService::getInstance()->getNewDocumentInstance();
-    }
-    
-    /**
+	/**
+	 * @return twitterconnect_persistentdocument_tweet
+	 */
+	protected function initPersistentDocument()
+	{
+		return twitterconnect_TweetService::getInstance()->getNewDocumentInstance();
+	}
+	
+	/**
 	 * @return f_persistentdocument_PersistentDocumentModel
 	 */
 	protected function getDocumentModel()

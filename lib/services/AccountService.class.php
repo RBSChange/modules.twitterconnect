@@ -1,27 +1,10 @@
 <?php
 /**
- * twitterconnect_AccountService
  * @package modules.twitterconnect
+ * @method twitterconnect_AccountService getInstance()
  */
 class twitterconnect_AccountService extends f_persistentdocument_DocumentService
 {
-	/**
-	 * @var twitterconnect_AccountService
-	 */
-	private static $instance;
-
-	/**
-	 * @return twitterconnect_AccountService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return twitterconnect_persistentdocument_account
 	 */
@@ -38,7 +21,7 @@ class twitterconnect_AccountService extends f_persistentdocument_DocumentService
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/account');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/account');
 	}
 	
 	/**
@@ -49,7 +32,7 @@ class twitterconnect_AccountService extends f_persistentdocument_DocumentService
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/account', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/account', false);
 	}
 	
 	/**
@@ -80,7 +63,7 @@ class twitterconnect_AccountService extends f_persistentdocument_DocumentService
 	{
 		$resume = parent::getResume($document, $forModuleName, $allowedSections);
 		
-		$resume['properties']['authorized'] = f_Locale::translateUI('&framework.boolean.' . ($document->isAuthorized() ? 'True' : 'False') . ';');
+		$resume['properties']['authorized'] = LocaleService::getInstance()->trans('f.boolean.' . ($document->isAuthorized() ? 'true' : 'false'));
 		
 		return $resume;
 	}

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.general" lcid="en_GB">
-  <key id="module-name">Interconnection to Twitter</key>
-  <key id="system-folder-name">Interconnection to Twitter</key>
-  <key id="short-url">shortened URL</key>
-  <key id="on">on</key>
-  <key id="period-h">every {period} hours</key>
-  <key id="period-d">every {period} days</key>
-  <key id="period-w">every {period} weeks</key>
-  <key id="period-m">every {period} months</key>
-  <key id="period-y">every {period} years</key>
+	<key id="module-name">Interconnection to Twitter</key>
+	<key id="system-folder-name">Interconnection to Twitter</key>
+	<key id="short-url">shortened URL</key>
+	<key id="on">on</key>
+	<key id="period-h">every {period} hours</key>
+	<key id="period-d">every {period} days</key>
+	<key id="period-w">every {period} weeks</key>
+	<key id="period-m">every {period} months</key>
+	<key id="period-y">every {period} years</key>
 </i18n>

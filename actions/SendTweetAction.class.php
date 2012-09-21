@@ -13,26 +13,29 @@ class twitterconnect_SendTweetAction extends change_JSONAction
 	{
 		$result = array();
 		$errors = array();
-
+		
+		$ls = LocaleService::getInstance();
 		$tms = twitterconnect_ModuleService::getInstance();
 		$module = $request->getParameter('currentModule');
 		$contents = $request->getParameter('contents');
+		Framework::fatal(__METHOD__ . ' ' . $contents);
 		foreach (explode(',', $request->getParameter('accounts')) as $accountId)
 		{
-			$account = DocumentHelper::getDocumentInstance($accountId);
+			$account = twitterconnect_persistentdocument_account::getInstanceById($accountId);
 			$token = $account->getAccessToken();
 			$ms = ModuleService::getInstance();
 			$config = array('consumerKey' => $ms->getPreferenceValue('twitterconnect', 'consumerKey'),
 							'consumerSecret' => $ms->getPreferenceValue('twitterconnect', 'consumerSecret'));
 			$client = $token->getHttpClient($config, null, Framework::getHttpClientConfig());
 			$client->setUri('http://twitter.com/statuses/update.xml');
-			$client->setMethod(Zend_Http_Client::POST);
-			$client->setParameterPost('status', $contents);
-			$response = $client->request();
+			$client->setMethod(\Zend\Http\Request::METHOD_POST);
+			$client->setParameterPost(array('status' => $contents));
+			$response = $client->send();
 			$infos = $tms->parseTwitterResult($response->getBody());
 			if (array_key_exists('error', $infos))
 			{
-				$errors[] = f_Locale::translate('&modules.twitterconnect.bo.general.error.Error-sending-tweet;', array('account' => $account->getLabel(), 'error' => $infos['error']));
+				$params = array('account' => $account->getLabel(), 'error' => $infos['error']);
+				$errors[] = $ls->trans('m.twitterconnect.bo.general.error.error-sending-tweet', array('ucf'), $params);
 			}
 			else
 			{
@@ -56,7 +59,7 @@ class twitterconnect_SendTweetAction extends change_JSONAction
 		}
 		
 		$pageSize = $request->getParameter('pageSize');
-		$result = twitterconnect_ModuleService::getInstance()->getInfosByDocumentId($request->getParameter('relatedId'), $module, 0, $pageSize);		
+		$result = twitterconnect_ModuleService::getInstance()->getInfosByDocumentId($request->getParameter('relatedId'), $module, 0, $pageSize);
 		return $this->sendJSON($result);
 	}
 }

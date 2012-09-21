@@ -1,27 +1,10 @@
 <?php
 /**
- * twitterconnect_OnpublishplannerService
  * @package modules.twitterconnect
+ * @method twitterconnect_OnpublishplannerService getInstance()
  */
 class twitterconnect_OnpublishplannerService extends twitterconnect_PlannerService
 {
-	/**
-	 * @var twitterconnect_OnpublishplannerService
-	 */
-	private static $instance;
-
-	/**
-	 * @return twitterconnect_OnpublishplannerService
-	 */
-	public static function getInstance()
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
 	/**
 	 * @return twitterconnect_persistentdocument_onpublishplanner
 	 */
@@ -38,7 +21,7 @@ class twitterconnect_OnpublishplannerService extends twitterconnect_PlannerServi
 	 */
 	public function createQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/onpublishplanner');
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/onpublishplanner');
 	}
 	
 	/**
@@ -49,7 +32,7 @@ class twitterconnect_OnpublishplannerService extends twitterconnect_PlannerServi
 	 */
 	public function createStrictQuery()
 	{
-		return $this->pp->createQuery('modules_twitterconnect/onpublishplanner', false);
+		return $this->getPersistentProvider()->createQuery('modules_twitterconnect/onpublishplanner', false);
 	}
 	
 	/**

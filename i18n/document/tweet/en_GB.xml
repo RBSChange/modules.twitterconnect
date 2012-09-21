@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.document.tweet" lcid="en_GB">
-  <key id="document-name">tweet</key>
-  <key id="startpublicationdate">Start of publication date</key>
-  <key id="startpublicationdate-help">From this date on, the document will be published. If left empty, the document will be published immediately.</key>
-  <key id="endpublicationdate">End of publication date</key>
-  <key id="endpublicationdate-help">From this date on, the document will no longer be published. If left empty, the document will be published indefinitely.</key>
+	<key id="document-name">tweet</key>
+	<key id="startpublicationdate">Start of publication date</key>
+	<key id="startpublicationdate-help">From this date on, the document will be published. If left empty, the document will be published immediately.</key>
+	<key id="endpublicationdate">End of publication date</key>
+	<key id="endpublicationdate-help">From this date on, the document will no longer be published. If left empty, the document will be published indefinitely.</key>
 </i18n>

@@ -1,31 +1,14 @@
 <?php
 /**
- * @package modules.twitterconnect.lib.services
+ * @package modules.twitterconnect
+ * @method twitterconnect_ModuleService getInstance()
  */
 class twitterconnect_ModuleService extends ModuleBaseService
 {
 	/**
-	 * Singleton
-	 * @var twitterconnect_ModuleService
-	 */
-	private static $instance = null;
-	
-	/**
-	 * @return twitterconnect_ModuleService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-	
-	/**
 	 * @param f_persistentdocument_PersistentDocument $document
 	 * @param string $module
-	 * @return BaseService
+	 * @return change_BaseService
 	 */
 	public function getServiceForDocument($document, $module = null)
 	{
@@ -36,7 +19,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	/**
 	 * @param f_persistentdocument_PersistentDocumentModel $model
 	 * @param string $module
-	 * @return BaseService
+	 * @return change_BaseService
 	 */
 	public function getServiceForModel($model, $module = null)
 	{
@@ -86,7 +69,7 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	}
 	
 	/**
-	 * @param BaseService $service
+	 * @param change_BaseService $service
 	 * @param integer $websiteId
 	 * @param f_persistentdocument_PersistentDocument $document
 	 * @return array

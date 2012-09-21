@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.doceditor.panel.container-tweets" lcid="en_GB">
-  <key id="planner-list">automatic tweets</key>
-  <key id="title">Tweet automatically</key>
+	<key id="planner-list">automatic tweets</key>
+	<key id="title">Tweet automatically</key>
 </i18n>

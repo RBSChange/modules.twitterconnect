@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.twitterconnect.bo.general.planner-types" lcid="en_GB">
-  <key id="on-publish">when the contents are published</key>
-  <key id="periodic">every {period}</key>
+	<key id="on-publish">when the contents are published</key>
+	<key id="periodic">every {period}</key>
 </i18n>

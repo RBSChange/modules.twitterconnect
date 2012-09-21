@@ -1,7 +1,6 @@
 <?php
 /**
- * twitterconnect_ResendTweetAction
- * @package modules.twitterconnect.actions
+ * @package modules.twitterconnect
  */
 class twitterconnect_ResendTweetAction extends change_JSONAction
 {
@@ -19,7 +18,7 @@ class twitterconnect_ResendTweetAction extends change_JSONAction
 		if ($tweet->getSendingStatus() == twitterconnect_TweetService::STATUS_ERROR)
 		{
 			$account = $tweet->getAccount()->getLabel();
-			return $this->sendJSONError(f_Locale::translate('&modules.twitterconnect.bo.general.error.Error-sending-tweet;', array('account' => $account, 'error' => $tweet->getErrorMessage())));
+			return $this->sendJSONError(LocaleService::getInstance()->trans('m.twitterconnect.bo.general.error.error-sending-tweet', array('ucf'), array('account' => $account, 'error' => $tweet->getErrorMessage())));
 		}
 		
 		$startIndex = $request->hasParameter('startIndex') ? $request->getParameter('startIndex') : 0;
