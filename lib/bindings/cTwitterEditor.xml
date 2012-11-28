@@ -229,7 +229,7 @@
 							}
 						}
 					}
-					while (section = tweetsNode.childNodes[i])
+					while ((section = tweetsNode.childNodes[i]) != null)
 					{
 						section.setAttribute('collapsed', 'true');
 						i++;
@@ -285,7 +285,7 @@
 							}
 						}
 					}
-					while (section = plannersNode.childNodes[i])
+					while ((section = plannersNode.childNodes[i]) != null)
 					{
 						section.setAttribute('collapsed', 'true');
 						i++;
