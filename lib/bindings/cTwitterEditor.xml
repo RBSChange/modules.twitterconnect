@@ -752,7 +752,7 @@
 					<xul:label xbl:inherits="xbl:text=errorMessage" class="allow-text-selection" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=hideRelatedInfos">
-					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Related-documentLabel,ucf,attr}" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Related-document,ucf,attr,lab}" />
 					<xul:vbox pack="center"><xul:image xbl:inherits="src=relatedIconUrl" /></xul:vbox>
 					<xul:label xbl:inherits="value=relatedCompleteLabel" />
 				</xul:hbox>	
@@ -830,10 +830,10 @@
 					<xul:toolbarbutton anonid="delete" image="{IconsBase}/small/delete.png" label="${transui:m.uixul.bo.actions.Delete,ucf,attr}" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=lastTweetDatehidden">
-					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Last-tweet-dateLabel,ucf,attr}" /> <xul:label xbl:inherits="value=lastTweetDate" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Last-tweet-date,ucf,attr,lab}" /> <xul:label xbl:inherits="value=lastTweetDate" />
 				</xul:hbox>
 				<xul:hbox xbl:inherits="hidden=nextTweetDatehidden">
-					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Next-tweet-dateLabel,ucf,attr}" /> <xul:label xbl:inherits="value=nextTweetDate" />
+					<xul:label value="${transui:m.twitterconnect.bo.doceditor.panel.tweets.Next-tweet-date,ucf,attr,lab}" /> <xul:label xbl:inherits="value=nextTweetDate" />
 				</xul:hbox>
 				<xul:hbox flex="1" class="error-message" xbl:inherits="hidden=errorMessagehidden">
 					<xul:label xbl:inherits="value=errorMessage" />

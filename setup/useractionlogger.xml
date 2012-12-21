@@ -6,4 +6,5 @@
   <actiondef modulename="twitterconnect" actionname="delete.tweet" label="modules.twitterconnect.bo.useractionlogger.delete-tweet"/>
   <actiondef modulename="twitterconnect" actionname="update.account" label="modules.twitterconnect.bo.useractionlogger.update-account"/>
   <actiondef modulename="twitterconnect" actionname="delete.account" label="modules.twitterconnect.bo.useractionlogger.delete-account"/>
+  <actiondef modulename="twitterconnect" actionname="insert.folder" label="m.twitterconnect.bo.useractionlogger.insert-folder"/>
 </script>

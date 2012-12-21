@@ -10,4 +10,6 @@
   <key id="log-update-account">log-update-account</key>
   <key id="delete-account">delete.account {documentlabel}</key>
   <key id="log-delete-account">log-delete-account</key>
+  <key id="insert-folder">insert.folder {documentlabel}</key>
+  <key id="log-insert-folder">log insert folder</key>
 </i18n>
