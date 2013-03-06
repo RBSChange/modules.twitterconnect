@@ -25,7 +25,7 @@ class twitterconnect_ListAuthorizedaccountsbywebsiteService extends BaseService
 	/**
 	 * @return array<list_Item>
 	 */
-	public final function getItems()
+	public function getItems()
 	{
 		try 
 		{
