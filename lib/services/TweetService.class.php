@@ -158,9 +158,10 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		}
 		return $tweetsInfos;
 	}
-	
+
 	/**
 	 * @param integer $documentId
+	 * @param integer $websiteId
 	 */
 	public function sendTweetsPlannedOnPublishByRelatedDocumentId($documentId, $websiteId)
 	{
@@ -190,7 +191,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	{
 		$tms = twitterconnect_ModuleService::getInstance();
 		$account = $tweet->getAccount();
-		$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
+		$oauthRequest = new f_web_oauth_Request('https://api.twitter.com/1.1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
 		$oauthRequest->setParameter('status', $tweet->getLabel());
 		$oauthRequest->setToken($account->getAccessToken());
 		$client = new f_web_oauth_HTTPClient($oauthRequest);
@@ -208,7 +209,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		}
 		else
 		{
-			$tweetId = $infos['id'];
+			$tweetId = $infos['id_str'];
 			if (Framework::isInfoEnabled())
 			{
 				Framework::info(__METHOD__ . ' OK tweet id = ' . $tweetId);
@@ -231,6 +232,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 	/**
 	 * @param f_persistentdocument_PersistentDocument $document
 	 * @param twitterconnect_persistentdocument_account $account
+	 * @return bool
 	 */
 	public function hasTweetForDocumentAndAccount($document, $account)
 	{
@@ -268,9 +270,10 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		parent::preInsert($document, $parentNodeId);
 		$document->setInsertInTree(false);
 	}
-	
+
 	/**
 	 * @param string $modelName
+	 * @param twitterconnect_persistentdocument_account $account
 	 * @return integer[]
 	 */
 	public function getAlreadyTweetedPublishedIdsByModelName($modelName, $account)
@@ -305,8 +308,7 @@ class twitterconnect_TweetService extends f_persistentdocument_DocumentService
 		{
 			$tms = twitterconnect_ModuleService::getInstance();
 			$account = $document->getAccount();
-			$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/destroy.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
-			$oauthRequest->setParameter('id', $document->getTweetId());
+			$oauthRequest = new f_web_oauth_Request('https://api.twitter.com/1.1/statuses/destroy/' . $document->getTweetId() . '.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
 			$oauthRequest->setToken($account->getAccessToken());
 			$client = new f_web_oauth_HTTPClient($oauthRequest);
 			$client->getBackendClientInstance()->setTimeOut(0);

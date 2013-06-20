@@ -8,10 +8,10 @@ class twitterconnect_SendTweetAction extends f_action_BaseJSONAction
 	/**
 	 * @param Context $context
 	 * @param Request $request
+	 * @return null
 	 */
 	public function _execute($context, $request)
 	{
-		$result = array();
 		$errors = array();
 
 		$tms = twitterconnect_ModuleService::getInstance();
@@ -20,7 +20,7 @@ class twitterconnect_SendTweetAction extends f_action_BaseJSONAction
 		foreach (explode(',', $request->getParameter('accounts')) as $accountId)
 		{
 			$account = DocumentHelper::getDocumentInstance($accountId);
-			$oauthRequest = new f_web_oauth_Request('http://api.twitter.com/1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
+			$oauthRequest = new f_web_oauth_Request('https://api.twitter.com/1.1/statuses/update.' . $tms->getResultFormat(), $account->getConsumer(), f_web_oauth_Request::METHOD_POST);
 			$oauthRequest->setParameter('status', $contents);
 			$oauthRequest->setToken($account->getAccessToken());
 			$client = new f_web_oauth_HTTPClient($oauthRequest);
@@ -28,11 +28,11 @@ class twitterconnect_SendTweetAction extends f_action_BaseJSONAction
 			$infos = $tms->parseTwitterResult($client->execute());
 			if (array_key_exists('error', $infos))
 			{
-				$errors[] = f_Locale::translate('&modules.twitterconnect.bo.general.error.Error-sending-tweet;', array('account' => $account->getLabel(), 'error' => $infos['error']));
+				$errors[] = LocaleService::getInstance()->trans('m.twitterconnect.bo.general.error.error-sending-tweet', array('ucf'), array('account' => $account->getLabel(), 'error' => $infos['error']));
 			}
 			else
 			{
-				$tweetId = $infos['id'];
+				$tweetId = $infos['id_str'];
 				$tweet = twitterconnect_TweetService::getInstance()->getNewDocumentInstance();
 				$tweet->setLabel($contents);
 				$tweet->setAccountId($account->getId());

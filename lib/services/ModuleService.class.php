@@ -71,9 +71,9 @@ class twitterconnect_ModuleService extends ModuleBaseService
 		$service = $this->getServiceForDocument($document, $module);
 		return $this->getReplacementsByService($service, $websiteId, $document);
 	}
-	
+
 	/**
-	 * @param f_persistentdocument_PersistentDocument $document
+	 * @param string $modelName
 	 * @param string $module
 	 * @param integer $websiteId
 	 * @return array
@@ -99,12 +99,13 @@ class twitterconnect_ModuleService extends ModuleBaseService
 		}
 		return array();
 	}
-	
+
 	/**
 	 * @param integer $id
 	 * @param string $module
 	 * @param integer $startIndex
 	 * @param integer $pageSize
+	 * @throws BaseException
 	 * @return array
 	 */
 	public function getInfosByDocumentId($id, $module, $startIndex, $pageSize)
@@ -158,13 +159,14 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	 */
 	public function getResultFormat()
 	{
-		// Tweet ids are bigger thant the biggest integer that PHP can handle. 
-		// So we can't use the JSON format for now because decoding with JsonService will break them...
-		return 'xml';
+		// XML format does not exist any more in the 1.1 version.
+		return 'json';
 	}
-	
+
 	/**
 	 * @param string $result
+	 * @param string $format
+	 * @throws Exception
 	 * @return array
 	 */
 	public function parseTwitterResult($result, $format = null)
@@ -192,9 +194,10 @@ class twitterconnect_ModuleService extends ModuleBaseService
 	{
 		return JsonService::getInstance()->decode($result);
 	}
-	
+
 	/**
 	 * @param string $result
+	 * @throws Exception
 	 * @return array
 	 */
 	private function parseTwitterResultXml($result)
